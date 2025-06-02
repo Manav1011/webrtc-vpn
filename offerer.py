@@ -7,6 +7,7 @@ import time
 import tuntap
 import ipaddress
 import ssl
+import subprocess
 
 # Configure logging
 logging.basicConfig(
@@ -56,13 +57,45 @@ def is_private_ip(ip):
     except ValueError:
         return False
 
+def cleanup_tun_interface(name):
+    """Clean up existing TUN interface if it exists"""
+    try:
+        # Check if interface exists
+        result = subprocess.run(["ip", "link", "show", name], capture_output=True)
+        if result.returncode == 0:
+            logger.info(f"Found existing {name} interface, cleaning up...")
+            # Bring interface down
+            subprocess.run(["ip", "link", "set", name, "down"], check=True)
+            # Delete interface
+            subprocess.run(["ip", "link", "delete", name], check=True)
+            logger.info(f"Successfully cleaned up {name}")
+    except subprocess.CalledProcessError as e:
+        logger.debug(f"No cleanup needed for {name}: {e}")
+    except Exception as e:
+        logger.error(f"Error during cleanup of {name}: {e}")
+
 def tun_start(tap, channel):
     logger.info("Starting TUN interface and relay")
-    try:
-        tap.open()
-    except Exception as e:
-        logger.error(f"Failed to open TAP device {tap.name}: {e}")
-        raise
+    max_retries = 3
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            tap.open()
+            break
+        except OSError as e:
+            if e.errno == 16:  # Device or resource busy
+                retry_count += 1
+                logger.warning(f"TUN device busy, attempt {retry_count}/{max_retries}")
+                cleanup_tun_interface(tap.name)
+                time.sleep(1)
+                if retry_count == max_retries:
+                    raise RuntimeError(f"Failed to open TUN device after {max_retries} attempts")
+            else:
+                raise
+        except Exception as e:
+            logger.error(f"Failed to open TAP device {tap.name}: {e}")
+            raise
 
     def handle_incoming_data(data):
         try:
@@ -86,7 +119,6 @@ def tun_start(tap, channel):
     loop.add_reader(tap.fd, tun_reader)
     tap.up()
     # Set IP address after interface is up
-    import subprocess
     try:
         subprocess.run(["ip", "address", "add", "172.16.0.1/24", "dev", tap.name], check=True)
         logger.info(f"Assigned 172.16.0.1/24 to {tap.name}")
@@ -125,6 +157,9 @@ async def run():
     while True:
         await wait_for_signaling_server(signaling_url)
         try:
+            # Add cleanup before creating TUN interface
+            cleanup_tun_interface("revpn-offer")
+            
             logger.info("Creating RTCPeerConnection with STUN server")
             stun_servers = [
                 RTCIceServer(urls="stun:stun.l.google.com:19302"),
@@ -242,9 +277,13 @@ async def run():
             ws = None
 
 if __name__ == "__main__":
+    tap_name = "revpn-offer"
     try:
         asyncio.run(run())
     except KeyboardInterrupt:
         logger.info("Application stopped by user")
     except Exception as e:
         logger.error(f"Application error: {str(e)}")
+    finally:
+        logger.info("Cleaning up before exit...")
+        cleanup_tun_interface(tap_name)
