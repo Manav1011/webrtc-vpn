@@ -14,7 +14,8 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[        
-        logging.StreamHandler()
+        logging.StreamHandler(),
+        logging.FileHandler('offerer.log', mode='a')
     ]
 )
 logger = logging.getLogger('offerer')
@@ -109,12 +110,16 @@ def tun_start(tap, channel):
 
     def tun_reader():
         try:
+            if not tap.fd or tap.fd.closed:
+                logger.error("TUN interface is closed")
+                return
             data = tap.fd.read(tap.mtu)
             if data:
                 logger.info(f"Sending {len(data)} bytes through WebRTC channel")
                 channel.send(data)
         except Exception as e:
             logger.error(f"Error reading from TUN: {e}")
+            
     loop = asyncio.get_event_loop()
     loop.add_reader(tap.fd, tun_reader)
     tap.up()
@@ -127,6 +132,8 @@ def tun_start(tap, channel):
         logger.info(f"Set MTU 1300 for {tap.name}")
     except Exception as e:
         logger.error(f"Failed to assign IP or set MTU to {tap.name}: {e}")
+    
+    return tap.fd  # Return the file descriptor for cleanup
 
 async def wait_for_ice_connected(pc):
     connected = asyncio.Event()
@@ -155,6 +162,10 @@ async def run():
         "Cookie": "cf_clearance=z31K.46Cp3n5IpXHNiPBGuxUysFtT0O0kOosh9PJ6.A-1748719877-1.2.1.1-Lr.jHqZ9FnkoIwKy81b569PLjeTCtHme_erqTTIa.VslXwXs623NhWz3Wem7n5J3hD7vS5.NDIJt8gkXbUMNMdEFbVWThgxU5tcF1syJHL98JDyklZNkuxGZJuGIErIRyDAHYJ2zoWjpkKUNr5sFBGY2t.kFVRL3IGvHzyjRyAWINxZhVolhDbdrrWAugmKiqDD9UidsrQFA9JtfMIMrQcSdc.qf1R73UZuhjDxHWrp3ixtXZZO9culhnfBOgApwy5AIDyeqh8GVODOOPhHua9OQMhGvIkHUOxscDVkfRNd_o6n5qrxztAgR6ysiexwqeqyvVri2dluDh2l7m1faLs8GG8g7JmyCC2hwZ8R2XLFYQ0qyBlCH._BzJNJa6pfL"
     }
     while True:
+        tap = None
+        reader_handle = None
+        pc = None
+        
         await wait_for_signaling_server(signaling_url)
         try:
             # Add cleanup before creating TUN interface
@@ -180,7 +191,7 @@ async def run():
             ready = asyncio.Event()
             @channel.on("open")
             def on_open():
-                nonlocal ready
+                nonlocal ready, reader_handle
                 logger.info("Data channel is open, waiting for ICE connection")
                 async def check_ready():
                     logger.info("Waiting for ICE to connect...")
@@ -190,12 +201,14 @@ async def run():
                 async def start_tun_when_ready():
                     await ready.wait()
                     logger.info("Starting TUN interface")
-                    tun_start(tap, channel)
+                    nonlocal reader_handle
+                    reader_handle = tun_start(tap, channel)
                 asyncio.create_task(check_ready())
                 asyncio.create_task(start_tun_when_ready())
 
             @pc.on("connectionstatechange")
             def on_connectionstatechange():
+                nonlocal tap, reader_handle
                 logger.info(f"Connection state changed to: {pc.connectionState}")
                 if pc.connectionState == "connected":
                     logger.info("WebRTC state: connected (ICE completed, DTLS connected)")
@@ -204,6 +217,17 @@ async def run():
                         asyncio.create_task(ws.close())
                 elif pc.connectionState in ("disconnected", "failed", "closed"):
                     logger.warning("WebRTC state: lost (ICE disconnected/failed/closed), will attempt to reconnect")
+                    # Clean up TUN interface reader
+                    if reader_handle:
+                        loop = asyncio.get_event_loop()
+                        loop.remove_reader(tap.fd)
+                        reader_handle = None
+                    # Clean up TUN interface
+                    if tap:
+                        try:
+                            tap.close()
+                        except Exception as e:
+                            logger.error(f"Error closing TUN interface: {e}")
                     asyncio.create_task(pc.close())
                     reconnect_event.set()
 
