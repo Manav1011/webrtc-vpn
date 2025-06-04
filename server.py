@@ -37,7 +37,7 @@ async def notify_peers_ready():
         except Exception:
             pass
 
-async def signaling(websocket, path):
+async def signaling(websocket, path='/'):
     global pending_offer
     global pending_candidates
     client_id = str(id(websocket))[-6:]

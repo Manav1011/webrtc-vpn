@@ -216,6 +216,7 @@ async def run():
                     if ws:
                         asyncio.create_task(ws.close())
                 elif pc.connectionState in ("disconnected", "failed", "closed"):
+                    logger.info(f"WebRTC state: {pc.connectionState} (ICE disconnected/failed/closed)")
                     logger.warning("WebRTC state: lost (ICE disconnected/failed/closed), will attempt to reconnect")
                     # Clean up TUN interface reader
                     if reader_handle:
@@ -249,7 +250,6 @@ async def run():
                 logger.info("Connecting to signaling server...")
                 async with websockets.connect(
                     signaling_url,
-                    extra_headers=browser_headers,
                     ssl=ssl_context
                 ) as websocket:
                     ws = websocket
