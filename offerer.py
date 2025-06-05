@@ -11,7 +11,7 @@ import subprocess
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,  # Changed from INFO to DEBUG
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[        
         logging.StreamHandler(),
@@ -100,12 +100,18 @@ def tun_start(tap, channel):
 
     def handle_incoming_data(data):
         try:
+            if data == b"ping":
+                logger.debug("Received keepalive ping on data channel")
+                return
             logger.info(f"Received {len(data)} bytes from WebRTC channel")
-            result = tap.fd.write(data)
-            logger.info(f"Wrote {len(data)} bytes to TUN interface")
-            return result
+            try:
+                result = tap.fd.write(data)
+                logger.info(f"Wrote {len(data)} bytes to TUN interface")
+                return result
+            except Exception as e:
+                logger.error(f"Error writing to TUN interface: {e}", exc_info=True)
         except Exception as e:
-            logger.error(f"Error writing to TUN: {e}")
+            logger.error(f"Exception in handle_incoming_data: {e}", exc_info=True)
     channel.on("message")(handle_incoming_data)
 
     def tun_reader():
@@ -113,12 +119,15 @@ def tun_start(tap, channel):
             if not tap.fd or tap.fd.closed:
                 logger.error("TUN interface is closed")
                 return
-            data = tap.fd.read(tap.mtu)
-            if data:
-                logger.info(f"Sending {len(data)} bytes through WebRTC channel")
-                channel.send(data)
+            try:
+                data = tap.fd.read(tap.mtu)
+                if data:
+                    logger.info(f"Sending {len(data)} bytes through WebRTC channel")
+                    channel.send(data)
+            except Exception as e:
+                logger.error(f"Error reading from TUN interface: {e}", exc_info=True)
         except Exception as e:
-            logger.error(f"Error reading from TUN: {e}")
+            logger.error(f"Exception in tun_reader: {e}", exc_info=True)
             
     loop = asyncio.get_event_loop()
     loop.add_reader(tap.fd, tun_reader)
@@ -187,6 +196,27 @@ async def run():
             # Create the data channel for VPN traffic (like vpn.py)
             channel = pc.createDataChannel("vpntap")
             logger.info("Created data channel 'vpntap'")
+
+            # Add keepalive ping every 10 seconds
+            async def keepalive_ping():
+                while True:
+                    try:
+                        if channel.readyState == "open":
+                            channel.send(b"ping")
+                            logger.debug("Sent keepalive ping on data channel")
+                        await asyncio.sleep(10)
+                    except Exception as e:
+                        logger.error(f"Keepalive ping error: {e}")
+                        break
+            asyncio.create_task(keepalive_ping())
+
+            # Add data channel close/error handlers
+            @channel.on("close")
+            def on_close():
+                logger.warning("Data channel closed!")
+            @channel.on("error")
+            def on_error(e):
+                logger.error(f"Data channel error: {e}")
 
             ready = asyncio.Event()
             @channel.on("open")
