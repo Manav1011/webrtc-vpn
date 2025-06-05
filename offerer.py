@@ -8,6 +8,7 @@ import tuntap
 import ipaddress
 import ssl
 import subprocess
+import sys
 
 # Configure logging
 logging.basicConfig(
@@ -158,6 +159,10 @@ async def wait_for_ice_connected(pc):
     await connected.wait()
 
 async def run():
+    if len(sys.argv) < 2:
+        print("Usage: python offerer.py <room_id>")
+        sys.exit(1)
+    room_id = str(sys.argv[1])
     signaling_url = "wss://webrtc-vpn.mnv-dev.site"
     ssl_context = ssl._create_unverified_context()
     browser_headers = {
@@ -284,7 +289,7 @@ async def run():
                 ) as websocket:
                     ws = websocket
                     logger.info("Registering as offerer")
-                    await ws.send(json.dumps({"type": "register", "role": "offerer"}))
+                    await ws.send(json.dumps({"type": "register", "role": "offerer", "room": room_id}))
 
                     while True:
                         message = await ws.recv()

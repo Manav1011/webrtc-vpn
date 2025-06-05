@@ -7,6 +7,7 @@ import time
 import tuntap
 import ipaddress
 import subprocess
+import sys
 
 
 # Add DEBUG logging
@@ -130,6 +131,10 @@ def tun_start(tap, channel):
     return tap.fd  # Return the file descriptor for cleanup
 
 async def run():
+    if len(sys.argv) < 2:
+        print("Usage: python answerer.py <room_id>")
+        sys.exit(1)
+    room_id = str(sys.argv[1])
     signaling_url = "wss://webrtc-vpn.mnv-dev.site"
     while True:
         tap = None
@@ -248,7 +253,7 @@ async def run():
                 async with websockets.connect(signaling_url) as websocket:
                     ws = websocket
                     logger.info("Registering as answerer")
-                    await ws.send(json.dumps({"type": "register", "role": "answerer"}))
+                    await ws.send(json.dumps({"type": "register", "role": "answerer", "room": room_id}))
 
                     while True:
                         message = await ws.recv()
