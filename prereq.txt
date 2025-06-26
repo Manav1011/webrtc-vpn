@@ -1,0 +1,99 @@
+I'll provide you with the list of commands needed to set up and run the WebRTC VPN on another computer. Here are the steps:
+
+1. First, let me check the exact commands from config.txt:
+
+Read file: config.txt
+Here's the complete list of commands needed to set up and run the WebRTC VPN on another computer:
+
+1. Prerequisites Installation:
+```bash
+# Install Go (if not already installed)
+sudo apt-get update
+sudo apt-get install golang-go
+
+# Install required system packages
+sudo apt-get install build-essential
+
+# Clone the repository
+git clone https://github.com/yourusername/webrtc-vpn.git
+cd webrtc-vpn
+
+# Install Go dependencies
+go mod download
+```
+
+2. Interface Setup Commands (for the Offerer side):
+```bash
+# Create and configure the TAP interface
+sudo ip tuntap add dev revpn-offer mode tap
+sudo ip link set revpn-offer up
+sudo ip addr add 172.16.0.1/24 dev revpn-offer
+sudo ip link set dev revpn-offer mtu 1300
+```
+
+3. Interface Setup Commands (for the Answerer side):
+```bash
+# Create and configure the TAP interface
+sudo ip tuntap add dev revpn-answer mode tap
+sudo ip link set revpn-answer up
+sudo ip addr add 172.16.0.2/24 dev revpn-answer
+sudo ip link set dev revpn-answer mtu 1300
+```
+
+4. Build and Run Commands:
+```bash
+# Build the binaries
+./run.sh build
+
+# Run the offerer (on the first computer)
+sudo ./run.sh offerer office
+
+# Run the answerer (on the second computer)
+sudo ./run.sh answerer office
+```
+
+5. Cleanup Commands (when done):
+```bash
+# Remove the TAP interfaces
+sudo ip link delete revpn-offer
+sudo ip link delete revpn-answer
+```
+
+Important Notes:
+1. Both computers need to have:
+   - Linux operating system
+   - Root/sudo privileges
+   - Go installed (version 1.16 or later)
+   - Access to the same signaling server
+
+2. Network Requirements:
+   - Both computers need internet connectivity
+   - UDP ports should be open for WebRTC (typically in the range 49152-65535)
+   - Access to the signaling server (default port 8080)
+
+3. Security Considerations:
+   - Run the commands with sudo only when necessary (for network interface operations)
+   - Make sure the signaling server connection is secure
+   - Consider using a firewall to restrict access to the TAP interfaces
+
+4. Troubleshooting Commands:
+```bash
+# Check interface status
+ip addr show revpn-offer
+ip addr show revpn-answer
+
+# Check routing
+ip route show
+
+# Check interface logs
+dmesg | grep revpn
+
+# Check connectivity
+ping 172.16.0.1  # from answerer
+ping 172.16.0.2  # from offerer
+```
+
+Would you like me to:
+1. Provide more detailed instructions for any of these steps?
+2. Add any additional security recommendations?
+3. Include any specific troubleshooting steps?

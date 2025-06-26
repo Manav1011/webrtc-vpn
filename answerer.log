@@ -1,0 +1,1018 @@
+2025-06-09 11:15:19,411 [DEBUG] Using selector: EpollSelector
+2025-06-09 11:15:19,536 [DEBUG] = connection is CONNECTING
+2025-06-09 11:15:19,677 [DEBUG] > GET / HTTP/1.1
+2025-06-09 11:15:19,677 [DEBUG] > Host: webrtc-vpn.mnv-dev.site
+2025-06-09 11:15:19,677 [DEBUG] > Upgrade: websocket
+2025-06-09 11:15:19,677 [DEBUG] > Connection: Upgrade
+2025-06-09 11:15:19,677 [DEBUG] > Sec-WebSocket-Key: 1a2HEtfcv051uETWMF/YUw==
+2025-06-09 11:15:19,677 [DEBUG] > Sec-WebSocket-Version: 13
+2025-06-09 11:15:19,677 [DEBUG] > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+2025-06-09 11:15:19,677 [DEBUG] > User-Agent: Python/3.10 websockets/15.0.1
+2025-06-09 11:15:20,655 [DEBUG] < HTTP/1.1 101 Switching Protocols
+2025-06-09 11:15:20,655 [DEBUG] < Date: Mon, 09 Jun 2025 05:45:20 GMT
+2025-06-09 11:15:20,655 [DEBUG] < Connection: upgrade
+2025-06-09 11:15:20,655 [DEBUG] < Sec-Websocket-Accept: KylgEMBgMmR82YtBRJPtGhvAYik=
+2025-06-09 11:15:20,655 [DEBUG] < Sec-Websocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+2025-06-09 11:15:20,655 [DEBUG] < Upgrade: websocket
+2025-06-09 11:15:20,655 [DEBUG] < cf-cache-status: DYNAMIC
+2025-06-09 11:15:20,655 [DEBUG] < Report-To: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=81%2BJ9CcV5C6qNn5VIfI50l2x39ZI3%2FnI7QrKhZ8H%2BXy9OVW%2FrPU9QxDugFVkVPCu9pWntv9HftAtjoAuExKewU2UqzGAbX%2FlYaPcF6xnxzFh9dO3e5Jt9vJeEBXciPz6n2NgZwC4l5Wymg%3D%3D"}],"group":"cf-nel","max_age":604800}
+2025-06-09 11:15:20,655 [DEBUG] < NEL: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+2025-06-09 11:15:20,655 [DEBUG] < speculation-rules: "/cdn-cgi/speculation"
+2025-06-09 11:15:20,655 [DEBUG] < Access-Control-Allow-Origin: *
+2025-06-09 11:15:20,655 [DEBUG] < Server: cloudflare
+2025-06-09 11:15:20,655 [DEBUG] < CF-RAY: 94ce527a4a59db88-MRS
+2025-06-09 11:15:20,655 [DEBUG] < alt-svc: h3=":443"; ma=86400
+2025-06-09 11:15:20,655 [DEBUG] < server-timing: cfL4;desc="?proto=TCP&rtt=113992&min_rtt=113636&rtt_var=32274&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2828&recv_bytes=894&delivery_rate=25481&cwnd=219&unsent_bytes=0&cid=69962fab405f30d0&ts=983&x=0"
+2025-06-09 11:15:20,655 [DEBUG] = connection is OPEN
+2025-06-09 11:15:20,655 [INFO] Signaling server is online.
+2025-06-09 11:15:20,655 [DEBUG] > CLOSE 1000 (OK) [2 bytes]
+2025-06-09 11:15:20,656 [DEBUG] = connection is CLOSING
+2025-06-09 11:15:21,134 [DEBUG] < CLOSE 1000 (OK) [2 bytes]
+2025-06-09 11:15:21,134 [DEBUG] < EOF
+2025-06-09 11:15:21,135 [DEBUG] > EOF
+2025-06-09 11:15:21,135 [DEBUG] = connection is CLOSED
+2025-06-09 11:15:21,139 [INFO] Creating RTCPeerConnection with STUN server
+2025-06-09 11:15:21,141 [INFO] Connecting to signaling server...
+2025-06-09 11:15:21,339 [DEBUG] = connection is CONNECTING
+2025-06-09 11:15:21,480 [DEBUG] > GET / HTTP/1.1
+2025-06-09 11:15:21,480 [DEBUG] > Host: webrtc-vpn.mnv-dev.site
+2025-06-09 11:15:21,480 [DEBUG] > Upgrade: websocket
+2025-06-09 11:15:21,480 [DEBUG] > Connection: Upgrade
+2025-06-09 11:15:21,480 [DEBUG] > Sec-WebSocket-Key: psjj2H3QNHGBgiVNl1/SeQ==
+2025-06-09 11:15:21,480 [DEBUG] > Sec-WebSocket-Version: 13
+2025-06-09 11:15:21,480 [DEBUG] > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+2025-06-09 11:15:21,480 [DEBUG] > User-Agent: Python/3.10 websockets/15.0.1
+2025-06-09 11:15:22,471 [DEBUG] < HTTP/1.1 101 Switching Protocols
+2025-06-09 11:15:22,471 [DEBUG] < Date: Mon, 09 Jun 2025 05:45:22 GMT
+2025-06-09 11:15:22,471 [DEBUG] < Connection: upgrade
+2025-06-09 11:15:22,471 [DEBUG] < Sec-Websocket-Accept: e8xwDY44LkYj11VThG1Qvt5Jf4I=
+2025-06-09 11:15:22,471 [DEBUG] < Sec-Websocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+2025-06-09 11:15:22,471 [DEBUG] < Upgrade: websocket
+2025-06-09 11:15:22,471 [DEBUG] < cf-cache-status: DYNAMIC
+2025-06-09 11:15:22,471 [DEBUG] < Report-To: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=SQFBp1eO9ivRNEB1vK%2BAM%2B9d%2F8Pk84dY7dzI06mSehUgTXsngh7ngnQjSPJp%2BIY52RuRWkLarmvZ10PBz8WWdHMbdHIGVUBXGmgDOpu5NfzVCWJWFwER9r7vyDYEYYLwx%2BlPkfzZ5mDGmQ%3D%3D"}],"group":"cf-nel","max_age":604800}
+2025-06-09 11:15:22,471 [DEBUG] < NEL: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+2025-06-09 11:15:22,472 [DEBUG] < speculation-rules: "/cdn-cgi/speculation"
+2025-06-09 11:15:22,472 [DEBUG] < Access-Control-Allow-Origin: *
+2025-06-09 11:15:22,472 [DEBUG] < Server: cloudflare
+2025-06-09 11:15:22,472 [DEBUG] < CF-RAY: 94ce52858c268479-MRS
+2025-06-09 11:15:22,472 [DEBUG] < alt-svc: h3=":443"; ma=86400
+2025-06-09 11:15:22,472 [DEBUG] < server-timing: cfL4;desc="?proto=TCP&rtt=176058&min_rtt=109809&rtt_var=90370&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2828&recv_bytes=894&delivery_rate=26371&cwnd=245&unsent_bytes=0&cid=3ff261de36eaa353&ts=1001&x=0"
+2025-06-09 11:15:22,472 [DEBUG] = connection is OPEN
+2025-06-09 11:15:22,472 [INFO] Registering as answerer
+2025-06-09 11:15:22,472 [DEBUG] > TEXT '{"type": "register", "role": "answerer", "room": "1234"}' [56 bytes]
+2025-06-09 11:15:22,978 [DEBUG] < TEXT '{"type": "ready"}' [17 bytes]
+2025-06-09 11:15:22,978 [INFO] Received message type: ready
+2025-06-09 11:15:22,978 [INFO] Both peers are online. Waiting for offer.
+2025-06-09 11:15:23,490 [DEBUG] < TEXT '{"type": "offer", "target": "answerer", "sdp": ...a=setup:actpass\\r\\n"}' [1823 bytes]
+2025-06-09 11:15:23,490 [INFO] Received message type: offer
+2025-06-09 11:15:23,490 [INFO] Processing offer from peer
+2025-06-09 11:15:23,490 [DEBUG] RTCPeerConnection() setRemoteDescription(offer)
+v=0
+o=- 3958436722 3958436722 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=group:BUNDLE 0
+a=msid-semantic:WMS *
+m=application 54257 DTLS/SCTP 5000
+c=IN IP4 192.168.7.195
+a=mid:0
+a=sctpmap:5000 webrtc-datachannel 65535
+a=max-message-size:65536
+a=candidate:0001eb6f7c3cd52a2fc9104a8ca37784 1 udp 2130706431 192.168.7.195 54257 typ host
+a=candidate:d13cb2e3e706cb707e5e7a05e7babe77 1 udp 2130706431 172.20.0.1 54327 typ host
+a=candidate:96744b746ca3046d82efb394e4c2b69c 1 udp 2130706431 172.21.0.1 47126 typ host
+a=candidate:17df9441e1a496b7f666bdcfb3826610 1 udp 2130706431 172.19.0.1 48655 typ host
+a=candidate:580b5f32035da7f14a30ea7a8d826c67 1 udp 2130706431 172.17.0.1 36549 typ host
+a=candidate:95a5144d22d827ac85a6c13daea75649 1 udp 2130706431 172.18.0.1 58479 typ host
+a=candidate:0f3b412dcd29d04164d632fd05c6959f 1 udp 1694498815 110.226.96.28 47126 typ srflx raddr 172.21.0.1 rport 47126
+a=candidate:a4082408efe58d5e7a66f05a48035dfd 1 udp 1694498815 110.226.96.28 54257 typ srflx raddr 192.168.7.195 rport 54257
+a=candidate:297898e4296c74660bb3ab65d8da90ec 1 udp 1694498815 110.226.96.28 58479 typ srflx raddr 172.18.0.1 rport 58479
+a=candidate:e561fd838710cb12e3ec857899f83408 1 udp 1694498815 110.226.96.28 48655 typ srflx raddr 172.19.0.1 rport 48655
+a=candidate:3eac32be6dcdd100d7011b5f4c7ffdc3 1 udp 1694498815 110.226.96.28 54327 typ srflx raddr 172.20.0.1 rport 54327
+a=candidate:0ad8db753210ce9554cf251a9e51e792 1 udp 1694498815 110.226.96.28 36549 typ srflx raddr 172.17.0.1 rport 36549
+a=end-of-candidates
+a=ice-ufrag:kyAd
+a=ice-pwd:zvskcJd3Yaq0r5liaQyfRk
+a=fingerprint:sha-256 94:50:BC:F3:79:9F:10:A0:13:59:C1:03:CE:E6:3E:3C:10:EB:FF:3E:B4:46:48:DC:CA:FD:E2:FC:9B:F9:DB:42
+a=setup:actpass
+
+2025-06-09 11:15:23,491 [INFO] Set remote description
+2025-06-09 11:15:23,492 [INFO] Creating answer
+2025-06-09 11:15:23,492 [DEBUG] RTCPeerConnection() setLocalDescription(answer)
+v=0
+o=- 3958436723 3958436723 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=group:BUNDLE 0
+a=msid-semantic:WMS *
+m=application 9 DTLS/SCTP 5000
+c=IN IP4 0.0.0.0
+a=mid:0
+a=sctpmap:5000 webrtc-datachannel 65535
+a=max-message-size:65536
+a=ice-ufrag:9kVr
+a=ice-pwd:Mb6C47bGBgLRKyIAPZ3RcC
+a=fingerprint:sha-256 FA:43:D2:7C:AE:8B:76:4A:FA:18:55:C2:5D:B4:E7:97:F8:62:77:D3:5F:06:4E:A1:22:E2:45:86:31:39:F8:E1
+a=setup:active
+
+2025-06-09 11:15:23,492 [DEBUG] RTCPeerConnection() iceGatheringState new -> gathering
+2025-06-09 11:15:23,493 [DEBUG] Connection(0) protocol(0) connection_made(<_SelectorDatagramTransport fd=9 read=idle write=<idle, bufsize=0>>)
+2025-06-09 11:15:23,493 [DEBUG] Connection(0) protocol(1) connection_made(<_SelectorDatagramTransport fd=10 read=idle write=<idle, bufsize=0>>)
+2025-06-09 11:15:23,493 [DEBUG] Connection(0) protocol(2) connection_made(<_SelectorDatagramTransport fd=11 read=idle write=<idle, bufsize=0>>)
+2025-06-09 11:15:23,494 [DEBUG] Connection(0) protocol(3) connection_made(<_SelectorDatagramTransport fd=12 read=idle write=<idle, bufsize=0>>)
+2025-06-09 11:15:23,494 [DEBUG] Connection(0) protocol(4) connection_made(<_SelectorDatagramTransport fd=13 read=idle write=<idle, bufsize=0>>)
+2025-06-09 11:15:23,494 [DEBUG] Connection(0) protocol(5) connection_made(<_SelectorDatagramTransport fd=14 read=idle write=<idle, bufsize=0>>)
+2025-06-09 11:15:23,494 [DEBUG] Connection(0) protocol(0) > ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x1a*\x95M@=\xfce\xbc\x9d;9')
+2025-06-09 11:15:23,495 [DEBUG] Connection(0) protocol(1) > ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'm\xf6p\xd8\xbd\xfe\xfd\x94\x9d\xa3j\xae')
+2025-06-09 11:15:23,495 [DEBUG] Connection(0) protocol(2) > ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xf2e\x0e\xbd]\xef\x91\x11\xdd\xa3.\xfd')
+2025-06-09 11:15:23,495 [DEBUG] Connection(0) protocol(3) > ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xec\x8a\x80\xb8\xb6 \xab\xae\x9d\t,\xde')
+2025-06-09 11:15:23,495 [DEBUG] Connection(0) protocol(4) > ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'S\xad\xa4\xdek\xab\xadq8\x0f\xacS')
+2025-06-09 11:15:23,495 [DEBUG] Connection(0) protocol(5) > ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xd3\x08\x9a\x9b\xf8\xe5\xee\x12\x80\x05\xde\xc0')
+2025-06-09 11:15:23,541 [DEBUG] Connection(0) protocol(3) < ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xec\x8a\x80\xb8\xb6 \xab\xae\x9d\t,\xde')
+2025-06-09 11:15:23,541 [DEBUG] Connection(0) protocol(4) < ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'S\xad\xa4\xdek\xab\xadq8\x0f\xacS')
+2025-06-09 11:15:23,541 [DEBUG] Connection(0) protocol(1) < ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'm\xf6p\xd8\xbd\xfe\xfd\x94\x9d\xa3j\xae')
+2025-06-09 11:15:23,541 [DEBUG] Connection(0) protocol(0) < ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x1a*\x95M@=\xfce\xbc\x9d;9')
+2025-06-09 11:15:23,541 [DEBUG] Connection(0) protocol(5) < ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xd3\x08\x9a\x9b\xf8\xe5\xee\x12\x80\x05\xde\xc0')
+2025-06-09 11:15:23,541 [DEBUG] Connection(0) protocol(2) < ('74.125.250.129', 19302) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xf2e\x0e\xbd]\xef\x91\x11\xdd\xa3.\xfd')
+2025-06-09 11:15:23,541 [DEBUG] RTCPeerConnection() iceGatheringState gathering -> complete
+2025-06-09 11:15:23,541 [INFO] Set local description
+2025-06-09 11:15:23,541 [INFO] Sending answer to offerer
+2025-06-09 11:15:23,542 [DEBUG] > TEXT '{"type": "answer", "target": "offerer", "sdp": ...na=setup:active\\r\\n"}' [1822 bytes]
+2025-06-09 11:15:23,542 [DEBUG] RTCIceTransport(controlled) - new -> checking
+2025-06-09 11:15:23,542 [DEBUG] RTCPeerConnection() iceConnectionState new -> checking
+2025-06-09 11:15:23,542 [DEBUG] RTCPeerConnection() connectionState new -> connecting
+2025-06-09 11:15:23,542 [INFO] Connection state changed to: connecting
+2025-06-09 11:15:23,542 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('192.168.7.195', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('192.168.7.195', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('192.168.7.195', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('192.168.7.195', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('192.168.7.195', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('192.168.7.195', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.20.0.1', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('192.168.7.195', 54257)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,543 [DEBUG] Connection(0) protocol(0) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x19p\xcd)\x9c\xd6\x964\xa9&\x87\x1b')
+2025-06-09 11:15:23,543 [DEBUG] Connection(0) protocol(0) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x19p\xcd)\x9c\xd6\x964\xa9&\x87\x1b')
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('192.168.7.195', 54257)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.21.0.1', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.19.0.1', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,543 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.17.0.1', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.18.0.1', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,544 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,563 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('192.168.7.195', 54257)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,563 [DEBUG] Connection(0) protocol(1) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x8d\x98\xe1\xaf\xfc\xa3b0\xdeL|Y')
+2025-06-09 11:15:23,563 [DEBUG] Connection(0) protocol(1) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x8d\x98\xe1\xaf\xfc\xa3b0\xdeL|Y')
+2025-06-09 11:15:23,563 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('192.168.7.195', 54257)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.20.0.1', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.21.0.1', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.19.0.1', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.17.0.1', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.18.0.1', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,564 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,583 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('192.168.7.195', 54257)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,583 [DEBUG] Connection(0) protocol(2) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x1f\xff\x1b\x03\x97\x89\xb5\xba\xfbK\\\xe7')
+2025-06-09 11:15:23,584 [DEBUG] Connection(0) protocol(2) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x1f\xff\x1b\x03\x97\x89\xb5\xba\xfbK\\\xe7')
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('192.168.7.195', 54257)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.20.0.1', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.21.0.1', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.19.0.1', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.17.0.1', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.18.0.1', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,584 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,604 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('192.168.7.195', 54257)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,604 [DEBUG] Connection(0) protocol(3) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'P\xf3\xa86=\x1b\xa7\xfe\xa2\x18E\xa0')
+2025-06-09 11:15:23,604 [DEBUG] Connection(0) protocol(3) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'P\xf3\xa86=\x1b\xa7\xfe\xa2\x18E\xa0')
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('192.168.7.195', 54257)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.20.0.1', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.21.0.1', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.19.0.1', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.17.0.1', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.18.0.1', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,605 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,625 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('192.168.7.195', 54257)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,625 [DEBUG] Connection(0) protocol(4) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xca1@\x19\x955I\xaa\x11X\x8c\t')
+2025-06-09 11:15:23,625 [DEBUG] Connection(0) protocol(4) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xca1@\x19\x955I\xaa\x11X\x8c\t')
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('192.168.7.195', 54257)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.20.0.1', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.21.0.1', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.19.0.1', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.17.0.1', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.18.0.1', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,626 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,645 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('192.168.7.195', 54257)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,645 [DEBUG] Connection(0) protocol(5) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'x\xa9\xe4\xf8\x94\xf0?\xc5-\xadn\xe5')
+2025-06-09 11:15:23,646 [DEBUG] Connection(0) protocol(5) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'x\xa9\xe4\xf8\x94\xf0?\xc5-\xadn\xe5')
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('192.168.7.195', 54257)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.20.0.1', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.21.0.1', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.19.0.1', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.17.0.1', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.18.0.1', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 47126)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 54257)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 58479)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 48655)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 54327)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,646 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 36549)) State.FROZEN -> State.WAITING
+2025-06-09 11:15:23,665 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.20.0.1', 54327)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,665 [DEBUG] Connection(0) protocol(0) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'h\x99\xc5\x1ej{Q\xa67(\xa1\xd0')
+2025-06-09 11:15:23,666 [DEBUG] Connection(0) protocol(0) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'h\x99\xc5\x1ej{Q\xa67(\xa1\xd0')
+2025-06-09 11:15:23,666 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.20.0.1', 54327)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,686 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.20.0.1', 54327)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,686 [DEBUG] Connection(0) protocol(1) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'q\x16\x8b\x88\xae\xf7F\xfc\xdc\xbcs"')
+2025-06-09 11:15:23,686 [DEBUG] Connection(0) protocol(1) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'q\x16\x8b\x88\xae\xf7F\xfc\xdc\xbcs"')
+2025-06-09 11:15:23,687 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.20.0.1', 54327)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,707 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.20.0.1', 54327)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,707 [DEBUG] Connection(0) protocol(2) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'!>\xf2V\x15d\xdc4\x9d\x12\xdb5')
+2025-06-09 11:15:23,707 [DEBUG] Connection(0) protocol(2) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'!>\xf2V\x15d\xdc4\x9d\x12\xdb5')
+2025-06-09 11:15:23,707 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.20.0.1', 54327)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,727 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.20.0.1', 54327)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,728 [DEBUG] Connection(0) protocol(3) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'q\x0f\x17p]\xa8\x81f\x84\xde\x1d\x8b')
+2025-06-09 11:15:23,728 [DEBUG] Connection(0) protocol(3) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'q\x0f\x17p]\xa8\x81f\x84\xde\x1d\x8b')
+2025-06-09 11:15:23,728 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.20.0.1', 54327)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,748 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.20.0.1', 54327)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,748 [DEBUG] Connection(0) protocol(4) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x96~\x81CW\xb2C\xc3\xd1\xae\x1d\x8e')
+2025-06-09 11:15:23,749 [DEBUG] Connection(0) protocol(4) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x96~\x81CW\xb2C\xc3\xd1\xae\x1d\x8e')
+2025-06-09 11:15:23,749 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.20.0.1', 54327)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,769 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.20.0.1', 54327)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,769 [DEBUG] Connection(0) protocol(5) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xa5\xc6]?(V\xe3\x9eg@\xb3\xdf')
+2025-06-09 11:15:23,770 [DEBUG] Connection(0) protocol(5) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xa5\xc6]?(V\xe3\x9eg@\xb3\xdf')
+2025-06-09 11:15:23,770 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.20.0.1', 54327)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,790 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.21.0.1', 47126)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,790 [DEBUG] Connection(0) protocol(0) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\t\x85\x0e\xc1LY"\xb8\x0bL\x921')
+2025-06-09 11:15:23,790 [DEBUG] Connection(0) protocol(0) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\t\x85\x0e\xc1LY"\xb8\x0bL\x921')
+2025-06-09 11:15:23,790 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.21.0.1', 47126)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,811 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.21.0.1', 47126)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,811 [DEBUG] Connection(0) protocol(1) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x92\xc0\x02\x98B$\xb9\x05\x87\xbe\xcb\xcf')
+2025-06-09 11:15:23,811 [DEBUG] Connection(0) protocol(1) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x92\xc0\x02\x98B$\xb9\x05\x87\xbe\xcb\xcf')
+2025-06-09 11:15:23,811 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.21.0.1', 47126)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,831 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.21.0.1', 47126)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,831 [DEBUG] Connection(0) protocol(2) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x0e\x1dK\xd9\xb9\xb1\x0eie\xc1\xaa\xde')
+2025-06-09 11:15:23,832 [DEBUG] Connection(0) protocol(2) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x0e\x1dK\xd9\xb9\xb1\x0eie\xc1\xaa\xde')
+2025-06-09 11:15:23,832 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.21.0.1', 47126)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,852 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.21.0.1', 47126)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,852 [DEBUG] Connection(0) protocol(3) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x0c\xf7y\x9e\xcc\xd0\xb4KV%\xac\xe3')
+2025-06-09 11:15:23,852 [DEBUG] Connection(0) protocol(3) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x0c\xf7y\x9e\xcc\xd0\xb4KV%\xac\xe3')
+2025-06-09 11:15:23,853 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.21.0.1', 47126)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,873 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.21.0.1', 47126)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,873 [DEBUG] Connection(0) protocol(4) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b' 2Y\xfb9\xf6)0<3\xc21')
+2025-06-09 11:15:23,873 [DEBUG] Connection(0) protocol(4) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b' 2Y\xfb9\xf6)0<3\xc21')
+2025-06-09 11:15:23,873 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.21.0.1', 47126)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,893 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.21.0.1', 47126)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,894 [DEBUG] Connection(0) protocol(5) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b',wC\x9e\xfb\xe8"\xe6\xec@\xfd\xa5')
+2025-06-09 11:15:23,894 [DEBUG] Connection(0) protocol(5) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b',wC\x9e\xfb\xe8"\xe6\xec@\xfd\xa5')
+2025-06-09 11:15:23,894 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.21.0.1', 47126)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,914 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.19.0.1', 48655)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,914 [DEBUG] Connection(0) protocol(0) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xab\x93\x18\xf8\x97D -|\r\x85\xe5')
+2025-06-09 11:15:23,915 [DEBUG] Connection(0) protocol(0) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xab\x93\x18\xf8\x97D -|\r\x85\xe5')
+2025-06-09 11:15:23,915 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.19.0.1', 48655)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,935 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.19.0.1', 48655)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,935 [DEBUG] Connection(0) protocol(1) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x9d%\xf0q\xcdC\x11\xdb\x8e\x0b\x83\xd5')
+2025-06-09 11:15:23,935 [DEBUG] Connection(0) protocol(1) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x9d%\xf0q\xcdC\x11\xdb\x8e\x0b\x83\xd5')
+2025-06-09 11:15:23,935 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.19.0.1', 48655)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,955 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.19.0.1', 48655)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,956 [DEBUG] Connection(0) protocol(2) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b',\xc3\xa1 :\x9aU\xbf\xf9F\xd5~')
+2025-06-09 11:15:23,956 [DEBUG] Connection(0) protocol(2) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b',\xc3\xa1 :\x9aU\xbf\xf9F\xd5~')
+2025-06-09 11:15:23,956 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.19.0.1', 48655)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,976 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.19.0.1', 48655)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,976 [DEBUG] Connection(0) protocol(3) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xc1w\x81Wu\xa8\xf1\xf96\xbe\x01\xaa')
+2025-06-09 11:15:23,977 [DEBUG] Connection(0) protocol(3) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xc1w\x81Wu\xa8\xf1\xf96\xbe\x01\xaa')
+2025-06-09 11:15:23,977 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.19.0.1', 48655)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:23,997 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.19.0.1', 48655)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:23,997 [DEBUG] Connection(0) protocol(4) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x93\xb3\x04b\x06B\x87#\xf2T\xc2\xef')
+2025-06-09 11:15:23,997 [DEBUG] Connection(0) protocol(4) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x93\xb3\x04b\x06B\x87#\xf2T\xc2\xef')
+2025-06-09 11:15:23,997 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.19.0.1', 48655)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:24,017 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.19.0.1', 48655)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:24,018 [DEBUG] Connection(0) protocol(5) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xab\xec\xe0\x814\xc0\x9e@\x9c\xd1\xebs')
+2025-06-09 11:15:24,018 [DEBUG] Connection(0) protocol(5) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xab\xec\xe0\x814\xc0\x9e@\x9c\xd1\xebs')
+2025-06-09 11:15:24,018 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.19.0.1', 48655)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:24,038 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.17.0.1', 36549)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:24,038 [DEBUG] Connection(0) protocol(0) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'H8y\xb9\xcb\x8e\xe0\xde\xcbT\x08\xca')
+2025-06-09 11:15:24,039 [DEBUG] Connection(0) protocol(0) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'H8y\xb9\xcb\x8e\xe0\xde\xcbT\x08\xca')
+2025-06-09 11:15:24,039 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.17.0.1', 36549)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:24,059 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.17.0.1', 36549)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:24,059 [DEBUG] Connection(0) protocol(1) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'y\xce\x07\x96=,I\xf2\xb4\xcc\x1f\x98')
+2025-06-09 11:15:24,059 [DEBUG] Connection(0) protocol(1) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'y\xce\x07\x96=,I\xf2\xb4\xcc\x1f\x98')
+2025-06-09 11:15:24,059 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.17.0.1', 36549)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:24,080 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.17.0.1', 36549)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:24,080 [DEBUG] Connection(0) protocol(2) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b"\xa2'\x16\xd9l\xe5\xd2\xea\xbf\x88\x8b5")
+2025-06-09 11:15:24,080 [DEBUG] Connection(0) protocol(2) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b"\xa2'\x16\xd9l\xe5\xd2\xea\xbf\x88\x8b5")
+2025-06-09 11:15:24,080 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.17.0.1', 36549)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:24,100 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.17.0.1', 36549)) State.WAITING -> State.IN_PROGRESS
+2025-06-09 11:15:24,100 [DEBUG] Connection(0) protocol(3) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'f`d?:,Fy\x8f%{\xdb')
+2025-06-09 11:15:24,101 [DEBUG] Connection(0) protocol(3) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'f`d?:,Fy\x8f%{\xdb')
+2025-06-09 11:15:24,101 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.17.0.1', 36549)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-09 11:15:24,108 [DEBUG] Connection(0) protocol(0) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xe3\xfc+^\xc8\x83C\xe4V(\x1f\xf5')
+2025-06-09 11:15:24,108 [DEBUG] Connection(0) protocol(0) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xe3\xfc+^\xc8\x83C\xe4V(\x1f\xf5')
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.17.0.1', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.17.0.1', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('172.18.0.1', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('172.18.0.1', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('172.18.0.1', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('172.18.0.1', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('172.18.0.1', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('172.18.0.1', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 47126)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 47126)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 47126)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 47126)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 47126)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 47126)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 54257)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 54257)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 54257)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 54257)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 54257)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 54257)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,108 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 58479)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 48655)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 48655)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 48655)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 48655)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 48655)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 48655)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 54327)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 54327)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 54327)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 54327)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 54327)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 54327)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 57451) -> ('110.226.96.28', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 35136) -> ('110.226.96.28', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 35873) -> ('110.226.96.28', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 47561) -> ('110.226.96.28', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 50052) -> ('110.226.96.28', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 55235) -> ('110.226.96.28', 36549)) State.WAITING -> State.FAILED
+2025-06-09 11:15:24,109 [INFO] Connection(0) ICE completed
+2025-06-09 11:15:24,109 [DEBUG] Connection(0) protocol(0) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xd2B\xa6aN\xff\x83\x9b5\xf4\xbaE')
+2025-06-09 11:15:24,109 [DEBUG] Connection(0) protocol(0) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xd2B\xa6aN\xff\x83\x9b5\xf4\xbaE')
+2025-06-09 11:15:24,109 [DEBUG] Connection(0) protocol(1) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'.u\xb6\xbf\xe3\x95\xd3\xc8\xa1W\xb8\xd8')
+2025-06-09 11:15:24,109 [DEBUG] Connection(0) protocol(1) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'.u\xb6\xbf\xe3\x95\xd3\xc8\xa1W\xb8\xd8')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(2) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xd7E\x0e\xf7:\xc9\xd8\x94v8X~')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(2) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xd7E\x0e\xf7:\xc9\xd8\x94v8X~')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(3) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b"'S\xce\xc2\x1b\xa86E\x11;=\xe9")
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(3) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b"'S\xce\xc2\x1b\xa86E\x11;=\xe9")
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(4) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'0\xed\xde\xa9\xb1CH\xcf\xa0\xda<e')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(4) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'0\xed\xde\xa9\xb1CH\xcf\xa0\xda<e')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(5) < ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'H\x8f?ofKq\x8eta\x9c@')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(5) > ('192.168.7.195', 54257) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'H\x8f?ofKq\x8eta\x9c@')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(0) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xae\x90Va\xfd\\U\xf2\xd5s\xc5\x91')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(0) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xae\x90Va\xfd\\U\xf2\xd5s\xc5\x91')
+2025-06-09 11:15:24,110 [DEBUG] Connection(0) protocol(1) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xe5\x19\x80\xea\xe6+\xad\xf1\t\xeeG\x8d')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(1) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xe5\x19\x80\xea\xe6+\xad\xf1\t\xeeG\x8d')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(2) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x05F7\xe7\x1d\xea\x9fl\xdc\xe2}K')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(2) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x05F7\xe7\x1d\xea\x9fl\xdc\xe2}K')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(3) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x8e\xe5wO.\xe7\xb8\xfb\x83SF\x11')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(3) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x8e\xe5wO.\xe7\xb8\xfb\x83SF\x11')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(4) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'`\xd7L\xc7\xcdI_\xf9\xf9\xbb\x1aa')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(4) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'`\xd7L\xc7\xcdI_\xf9\xf9\xbb\x1aa')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(5) < ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'Q\x81-|\x9a[ \xdf+\xe2R\x90')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(5) > ('172.20.0.1', 54327) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'Q\x81-|\x9a[ \xdf+\xe2R\x90')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(0) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x85a\r\xb3\xffF\x8d\x87\x14+\xae"')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(0) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x85a\r\xb3\xffF\x8d\x87\x14+\xae"')
+2025-06-09 11:15:24,111 [DEBUG] Connection(0) protocol(1) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b"\xfd\x85\x9c\xa61.Yjp'\x18Q")
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(1) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b"\xfd\x85\x9c\xa61.Yjp'\x18Q")
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(2) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x1e.Q\xe1\xd9\xd1\x1ay\xfe\xd5J\x92')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(2) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x1e.Q\xe1\xd9\xd1\x1ay\xfe\xd5J\x92')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(3) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b"\xd9g\x9b\x1c\x10\x07\x06\x9d\xd8\xb4\\'")
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(3) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b"\xd9g\x9b\x1c\x10\x07\x06\x9d\xd8\xb4\\'")
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(4) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x8bx\xddS\xa3io\xc6c=(9')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(4) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x8bx\xddS\xa3io\xc6c=(9')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(5) < ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x1e\x06\xb98M\x836\\\xddS\x1d\x9b')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(5) > ('172.21.0.1', 47126) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x1e\x06\xb98M\x836\\\xddS\x1d\x9b')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(0) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xfcz\x89\x19w\x16\x8d\x8aH\xa8%\xf0')
+2025-06-09 11:15:24,112 [DEBUG] Connection(0) protocol(0) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xfcz\x89\x19w\x16\x8d\x8aH\xa8%\xf0')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(1) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'D\xc3<\xbc\xf9\x1e3\xdf\x1b\xa8\xaf\xe9')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(1) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'D\xc3<\xbc\xf9\x1e3\xdf\x1b\xa8\xaf\xe9')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(2) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'Y\x03W\xa8anz\xf9x\xc4\xea\xba')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(2) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'Y\x03W\xa8anz\xf9x\xc4\xea\xba')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(3) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'-ck#\xbc\x90a\xe0\xc6\xc9k\xca')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(3) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'-ck#\xbc\x90a\xe0\xc6\xc9k\xca')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(4) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x1c>m\x85[\xff\xccSV\xceO\xc2')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(4) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x1c>m\x85[\xff\xccSV\xceO\xc2')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(5) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xe1{S\x92\xed?bP!2\x8b\x00')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(5) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xe1{S\x92\xed?bP!2\x8b\x00')
+2025-06-09 11:15:24,113 [DEBUG] Connection(0) protocol(1) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'B}O\xbf\xf9\x1d\x05\xfe\xe7\xd5\xb1K')
+2025-06-09 11:15:24,114 [DEBUG] Connection(0) protocol(1) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'B}O\xbf\xf9\x1d\x05\xfe\xe7\xd5\xb1K')
+2025-06-09 11:15:24,114 [DEBUG] Connection(0) protocol(2) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x8ev8\xb6fs#\x80\x8e\xf0\x1e\xaf')
+2025-06-09 11:15:24,114 [DEBUG] Connection(0) protocol(2) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x8ev8\xb6fs#\x80\x8e\xf0\x1e\xaf')
+2025-06-09 11:15:24,114 [DEBUG] Connection(0) protocol(3) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xbaHnf\x88"\xb6\xf4\xbb\xe3 \xbc')
+2025-06-09 11:15:24,114 [DEBUG] Connection(0) protocol(3) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xbaHnf\x88"\xb6\xf4\xbb\xe3 \xbc')
+2025-06-09 11:15:24,121 [DEBUG] RTCIceTransport(controlled) - checking -> completed
+2025-06-09 11:15:24,121 [DEBUG] RTCPeerConnection() iceConnectionState checking -> completed
+2025-06-09 11:15:24,121 [DEBUG] RTCDtlsTransport(client) - State.NEW -> State.CONNECTING
+2025-06-09 11:15:24,129 [DEBUG] RTCDtlsTransport(client) - DTLS handshake complete
+2025-06-09 11:15:24,129 [DEBUG] RTCDtlsTransport(client) - State.CONNECTING -> State.CONNECTED
+2025-06-09 11:15:24,129 [DEBUG] RTCPeerConnection() connectionState connecting -> connected
+2025-06-09 11:15:24,129 [INFO] Connection state changed to: connected
+2025-06-09 11:15:24,129 [INFO] WebRTC state: connected (ICE completed, DTLS connected)
+2025-06-09 11:15:24,130 [INFO] P2P connection established, closing websocket connection.
+2025-06-09 11:15:24,130 [DEBUG] > CLOSE 1000 (OK) [2 bytes]
+2025-06-09 11:15:24,130 [DEBUG] = connection is CLOSING
+2025-06-09 11:15:24,130 [DEBUG] RTCSctpTransport(server) < InitChunk(flags=0)
+2025-06-09 11:15:24,130 [DEBUG] RTCSctpTransport(server) - Peer supports 65535 outbound streams, 65535 max inbound streams
+2025-06-09 11:15:24,130 [DEBUG] RTCSctpTransport(server) > InitAckChunk(flags=0)
+2025-06-09 11:15:24,130 [DEBUG] RTCSctpTransport(server) < CookieEchoChunk(flags=0)
+2025-06-09 11:15:24,130 [DEBUG] RTCSctpTransport(server) > CookieAckChunk(flags=0)
+2025-06-09 11:15:24,131 [DEBUG] RTCSctpTransport(server) - State.CLOSED -> State.ESTABLISHED
+2025-06-09 11:15:24,131 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978072, stream_id=1, stream_seq=0)
+2025-06-09 11:15:24,131 [DEBUG] RTCDataChannel(1) - connecting -> open
+2025-06-09 11:15:24,131 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999155, stream_id=1, stream_seq=0)
+2025-06-09 11:15:24,131 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,131 [INFO] Data channel vpntap established
+2025-06-09 11:15:24,131 [INFO] Data channel is already open, waiting for ICE connection
+2025-06-09 11:15:24,131 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978072, gaps=[])
+2025-06-09 11:15:24,131 [INFO] Waiting for ICE to connect...
+2025-06-09 11:15:24,131 [INFO] ICE connection state changed to completed
+2025-06-09 11:15:24,131 [INFO] ICE connected.
+2025-06-09 11:15:24,131 [INFO] Starting TUN interface
+2025-06-09 11:15:24,131 [INFO] Starting TUN interface and relay
+2025-06-09 11:15:24,134 [INFO] Assigned 172.16.0.2/24 to b'revpn-answer'
+2025-06-09 11:15:24,135 [INFO] Set MTU 1300 for b'revpn-answer'
+2025-06-09 11:15:24,135 [DEBUG] Sent keepalive ping on data channel
+2025-06-09 11:15:24,135 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999156, stream_id=1, stream_seq=1)
+2025-06-09 11:15:24,135 [INFO] Sending 90 bytes through WebRTC channel
+2025-06-09 11:15:24,135 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999155, gaps=[])
+2025-06-09 11:15:24,135 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999157, stream_id=1, stream_seq=2)
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978073, stream_id=1, stream_seq=1)
+2025-06-09 11:15:24,136 [INFO] Received 90 bytes from WebRTC channel
+2025-06-09 11:15:24,136 [INFO] Wrote 90 bytes to TUN interface
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978073, gaps=[])
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999156, gaps=[])
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999157, gaps=[])
+2025-06-09 11:15:24,136 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,137 [INFO] Sending 54 bytes through WebRTC channel
+2025-06-09 11:15:24,137 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999158, stream_id=1, stream_seq=3)
+2025-06-09 11:15:24,137 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,137 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978074, stream_id=1, stream_seq=2)
+2025-06-09 11:15:24,137 [INFO] Received 54 bytes from WebRTC channel
+2025-06-09 11:15:24,137 [INFO] Wrote 54 bytes to TUN interface
+2025-06-09 11:15:24,137 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978074, gaps=[])
+2025-06-09 11:15:24,138 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999158, gaps=[])
+2025-06-09 11:15:24,138 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,235 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:24,235 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999159, stream_id=1, stream_seq=4)
+2025-06-09 11:15:24,235 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,235 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978075, stream_id=1, stream_seq=3)
+2025-06-09 11:15:24,235 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:24,235 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:24,235 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978075, gaps=[])
+2025-06-09 11:15:24,235 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999159, gaps=[])
+2025-06-09 11:15:24,235 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,280 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978076, stream_id=1, stream_seq=4)
+2025-06-09 11:15:24,280 [INFO] Received 54 bytes from WebRTC channel
+2025-06-09 11:15:24,280 [INFO] Wrote 54 bytes to TUN interface
+2025-06-09 11:15:24,280 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978076, gaps=[])
+2025-06-09 11:15:24,313 [INFO] Sending 134 bytes through WebRTC channel
+2025-06-09 11:15:24,313 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999160, stream_id=1, stream_seq=5)
+2025-06-09 11:15:24,313 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,313 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978077, stream_id=1, stream_seq=5)
+2025-06-09 11:15:24,313 [INFO] Received 134 bytes from WebRTC channel
+2025-06-09 11:15:24,313 [INFO] Wrote 134 bytes to TUN interface
+2025-06-09 11:15:24,313 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978077, gaps=[])
+2025-06-09 11:15:24,313 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999160, gaps=[])
+2025-06-09 11:15:24,313 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,336 [INFO] Sending 86 bytes through WebRTC channel
+2025-06-09 11:15:24,336 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999161, stream_id=1, stream_seq=6)
+2025-06-09 11:15:24,336 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,337 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999161, gaps=[])
+2025-06-09 11:15:24,337 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,523 [DEBUG] < CLOSE 1000 (OK) [2 bytes]
+2025-06-09 11:15:24,526 [DEBUG] < EOF
+2025-06-09 11:15:24,526 [DEBUG] > EOF
+2025-06-09 11:15:24,526 [DEBUG] = connection is CLOSED
+2025-06-09 11:15:24,564 [INFO] Sending 134 bytes through WebRTC channel
+2025-06-09 11:15:24,564 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999162, stream_id=1, stream_seq=7)
+2025-06-09 11:15:24,564 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,564 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978078, stream_id=1, stream_seq=6)
+2025-06-09 11:15:24,564 [INFO] Received 134 bytes from WebRTC channel
+2025-06-09 11:15:24,564 [INFO] Wrote 134 bytes to TUN interface
+2025-06-09 11:15:24,564 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978078, gaps=[])
+2025-06-09 11:15:24,564 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999162, gaps=[])
+2025-06-09 11:15:24,564 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,577 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978079, stream_id=1, stream_seq=7)
+2025-06-09 11:15:24,577 [INFO] Received 86 bytes from WebRTC channel
+2025-06-09 11:15:24,577 [INFO] Wrote 86 bytes to TUN interface
+2025-06-09 11:15:24,577 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978079, gaps=[])
+2025-06-09 11:15:24,768 [INFO] Sending 90 bytes through WebRTC channel
+2025-06-09 11:15:24,768 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999163, stream_id=1, stream_seq=8)
+2025-06-09 11:15:24,768 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,769 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999163, gaps=[])
+2025-06-09 11:15:24,769 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:24,814 [INFO] Sending 134 bytes through WebRTC channel
+2025-06-09 11:15:24,814 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999164, stream_id=1, stream_seq=9)
+2025-06-09 11:15:24,814 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:24,814 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978080, stream_id=1, stream_seq=8)
+2025-06-09 11:15:24,814 [INFO] Received 134 bytes from WebRTC channel
+2025-06-09 11:15:24,815 [INFO] Wrote 134 bytes to TUN interface
+2025-06-09 11:15:24,815 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978080, gaps=[])
+2025-06-09 11:15:24,815 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999164, gaps=[])
+2025-06-09 11:15:24,815 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,014 [INFO] Sending 122 bytes through WebRTC channel
+2025-06-09 11:15:25,015 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999165, stream_id=1, stream_seq=10)
+2025-06-09 11:15:25,015 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,015 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978081, stream_id=1, stream_seq=9)
+2025-06-09 11:15:25,015 [INFO] Received 122 bytes from WebRTC channel
+2025-06-09 11:15:25,015 [INFO] Wrote 122 bytes to TUN interface
+2025-06-09 11:15:25,015 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978081, gaps=[])
+2025-06-09 11:15:25,015 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999165, gaps=[])
+2025-06-09 11:15:25,015 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,089 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978082, stream_id=1, stream_seq=10)
+2025-06-09 11:15:25,089 [INFO] Received 90 bytes from WebRTC channel
+2025-06-09 11:15:25,089 [INFO] Wrote 90 bytes to TUN interface
+2025-06-09 11:15:25,089 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978082, gaps=[])
+2025-06-09 11:15:25,152 [INFO] Sending 54 bytes through WebRTC channel
+2025-06-09 11:15:25,152 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999166, stream_id=1, stream_seq=11)
+2025-06-09 11:15:25,152 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,153 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999166, gaps=[])
+2025-06-09 11:15:25,153 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,234 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:25,234 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999167, stream_id=1, stream_seq=12)
+2025-06-09 11:15:25,234 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,234 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978083, stream_id=1, stream_seq=11)
+2025-06-09 11:15:25,234 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:25,234 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:25,234 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978083, gaps=[])
+2025-06-09 11:15:25,234 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999167, gaps=[])
+2025-06-09 11:15:25,234 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,344 [INFO] Sending 90 bytes through WebRTC channel
+2025-06-09 11:15:25,345 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999168, stream_id=1, stream_seq=13)
+2025-06-09 11:15:25,345 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,345 [INFO] Sending 70 bytes through WebRTC channel
+2025-06-09 11:15:25,345 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999169, stream_id=1, stream_seq=14)
+2025-06-09 11:15:25,346 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999168, gaps=[])
+2025-06-09 11:15:25,346 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:25,346 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999169, gaps=[])
+2025-06-09 11:15:25,346 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,348 [INFO] Sending 90 bytes through WebRTC channel
+2025-06-09 11:15:25,348 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999170, stream_id=1, stream_seq=15)
+2025-06-09 11:15:25,348 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,349 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999170, gaps=[])
+2025-06-09 11:15:25,349 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,445 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:25,445 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999171, stream_id=1, stream_seq=16)
+2025-06-09 11:15:25,445 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,445 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999171, gaps=[])
+2025-06-09 11:15:25,445 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,524 [INFO] Sending 215 bytes through WebRTC channel
+2025-06-09 11:15:25,524 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999172, stream_id=1, stream_seq=17)
+2025-06-09 11:15:25,524 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,524 [INFO] Sending 195 bytes through WebRTC channel
+2025-06-09 11:15:25,524 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999173, stream_id=1, stream_seq=18)
+2025-06-09 11:15:25,525 [INFO] Sending 85 bytes through WebRTC channel
+2025-06-09 11:15:25,525 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999174, stream_id=1, stream_seq=19)
+2025-06-09 11:15:25,525 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999172, gaps=[])
+2025-06-09 11:15:25,525 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:25,525 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999173, gaps=[])
+2025-06-09 11:15:25,525 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:25,526 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999174, gaps=[])
+2025-06-09 11:15:25,526 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,544 [INFO] Sending 110 bytes through WebRTC channel
+2025-06-09 11:15:25,544 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999175, stream_id=1, stream_seq=20)
+2025-06-09 11:15:25,544 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,545 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999175, gaps=[])
+2025-06-09 11:15:25,545 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,601 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978084, stream_id=1, stream_seq=12)
+2025-06-09 11:15:25,601 [INFO] Received 90 bytes from WebRTC channel
+2025-06-09 11:15:25,601 [INFO] Wrote 90 bytes to TUN interface
+2025-06-09 11:15:25,601 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978084, gaps=[])
+2025-06-09 11:15:25,601 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978085, stream_id=1, stream_seq=13)
+2025-06-09 11:15:25,601 [INFO] Received 70 bytes from WebRTC channel
+2025-06-09 11:15:25,601 [INFO] Wrote 70 bytes to TUN interface
+2025-06-09 11:15:25,602 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978085, gaps=[])
+2025-06-09 11:15:25,603 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978086, stream_id=1, stream_seq=14)
+2025-06-09 11:15:25,603 [INFO] Received 90 bytes from WebRTC channel
+2025-06-09 11:15:25,603 [INFO] Wrote 90 bytes to TUN interface
+2025-06-09 11:15:25,603 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978086, gaps=[])
+2025-06-09 11:15:25,701 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978087, stream_id=1, stream_seq=15)
+2025-06-09 11:15:25,701 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:25,701 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:25,701 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978087, gaps=[])
+2025-06-09 11:15:25,774 [INFO] Sending 215 bytes through WebRTC channel
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999176, stream_id=1, stream_seq=21)
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,775 [INFO] Sending 195 bytes through WebRTC channel
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999177, stream_id=1, stream_seq=22)
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999176, gaps=[])
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999177, gaps=[])
+2025-06-09 11:15:25,775 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:25,776 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978088, stream_id=1, stream_seq=16)
+2025-06-09 11:15:25,776 [INFO] Received 90 bytes from WebRTC channel
+2025-06-09 11:15:25,776 [INFO] Wrote 90 bytes to TUN interface
+2025-06-09 11:15:25,776 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978088, gaps=[])
+2025-06-09 11:15:25,780 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978089, stream_id=1, stream_seq=17)
+2025-06-09 11:15:25,780 [INFO] Received 215 bytes from WebRTC channel
+2025-06-09 11:15:25,780 [INFO] Wrote 215 bytes to TUN interface
+2025-06-09 11:15:25,780 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978089, gaps=[])
+2025-06-09 11:15:25,781 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978090, stream_id=1, stream_seq=18)
+2025-06-09 11:15:25,781 [INFO] Received 195 bytes from WebRTC channel
+2025-06-09 11:15:25,781 [INFO] Wrote 195 bytes to TUN interface
+2025-06-09 11:15:25,781 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978090, gaps=[])
+2025-06-09 11:15:25,781 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978091, stream_id=1, stream_seq=19)
+2025-06-09 11:15:25,781 [INFO] Received 85 bytes from WebRTC channel
+2025-06-09 11:15:25,781 [INFO] Wrote 85 bytes to TUN interface
+2025-06-09 11:15:25,781 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978091, gaps=[])
+2025-06-09 11:15:25,840 [INFO] Sending 90 bytes through WebRTC channel
+2025-06-09 11:15:25,840 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999178, stream_id=1, stream_seq=23)
+2025-06-09 11:15:25,840 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:25,841 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999178, gaps=[])
+2025-06-09 11:15:25,841 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:26,025 [INFO] Sending 215 bytes through WebRTC channel
+2025-06-09 11:15:26,025 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999179, stream_id=1, stream_seq=24)
+2025-06-09 11:15:26,026 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:26,026 [INFO] Sending 195 bytes through WebRTC channel
+2025-06-09 11:15:26,026 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999180, stream_id=1, stream_seq=25)
+2025-06-09 11:15:26,026 [INFO] Sending 85 bytes through WebRTC channel
+2025-06-09 11:15:26,026 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999181, stream_id=1, stream_seq=26)
+2025-06-09 11:15:26,026 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999179, gaps=[])
+2025-06-09 11:15:26,026 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:26,026 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999180, gaps=[])
+2025-06-09 11:15:26,027 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:26,027 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999181, gaps=[])
+2025-06-09 11:15:26,027 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:26,030 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978092, stream_id=1, stream_seq=20)
+2025-06-09 11:15:26,030 [INFO] Received 215 bytes from WebRTC channel
+2025-06-09 11:15:26,031 [INFO] Wrote 215 bytes to TUN interface
+2025-06-09 11:15:26,031 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978092, gaps=[])
+2025-06-09 11:15:26,031 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978093, stream_id=1, stream_seq=21)
+2025-06-09 11:15:26,031 [INFO] Received 195 bytes from WebRTC channel
+2025-06-09 11:15:26,031 [INFO] Wrote 195 bytes to TUN interface
+2025-06-09 11:15:26,031 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978093, gaps=[])
+2025-06-09 11:15:26,105 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978094, stream_id=1, stream_seq=22)
+2025-06-09 11:15:26,105 [INFO] Received 110 bytes from WebRTC channel
+2025-06-09 11:15:26,105 [INFO] Wrote 110 bytes to TUN interface
+2025-06-09 11:15:26,105 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978094, gaps=[])
+2025-06-09 11:15:26,144 [INFO] Sending 106 bytes through WebRTC channel
+2025-06-09 11:15:26,144 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999182, stream_id=1, stream_seq=27)
+2025-06-09 11:15:26,144 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:26,144 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978095, stream_id=1, stream_seq=23)
+2025-06-09 11:15:26,145 [INFO] Received 106 bytes from WebRTC channel
+2025-06-09 11:15:26,145 [INFO] Wrote 106 bytes to TUN interface
+2025-06-09 11:15:26,145 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978095, gaps=[])
+2025-06-09 11:15:26,145 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999182, gaps=[])
+2025-06-09 11:15:26,145 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:26,225 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:26,226 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999183, stream_id=1, stream_seq=28)
+2025-06-09 11:15:26,226 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:26,226 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:26,226 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999184, stream_id=1, stream_seq=29)
+2025-06-09 11:15:26,226 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999183, gaps=[])
+2025-06-09 11:15:26,226 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:26,227 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999184, gaps=[])
+2025-06-09 11:15:26,227 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:26,281 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978096, stream_id=1, stream_seq=24)
+2025-06-09 11:15:26,281 [INFO] Received 215 bytes from WebRTC channel
+2025-06-09 11:15:26,281 [INFO] Wrote 215 bytes to TUN interface
+2025-06-09 11:15:26,281 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978096, gaps=[])
+2025-06-09 11:15:26,282 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978097, stream_id=1, stream_seq=25)
+2025-06-09 11:15:26,282 [INFO] Received 195 bytes from WebRTC channel
+2025-06-09 11:15:26,282 [INFO] Wrote 195 bytes to TUN interface
+2025-06-09 11:15:26,282 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978097, gaps=[])
+2025-06-09 11:15:26,282 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978098, stream_id=1, stream_seq=26)
+2025-06-09 11:15:26,282 [INFO] Received 85 bytes from WebRTC channel
+2025-06-09 11:15:26,282 [INFO] Wrote 85 bytes to TUN interface
+2025-06-09 11:15:26,282 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978098, gaps=[])
+2025-06-09 11:15:26,445 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:26,445 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999185, stream_id=1, stream_seq=30)
+2025-06-09 11:15:26,445 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:26,446 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999185, gaps=[])
+2025-06-09 11:15:26,446 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:26,481 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978099, stream_id=1, stream_seq=27)
+2025-06-09 11:15:26,481 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:26,481 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:26,481 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978099, gaps=[])
+2025-06-09 11:15:26,482 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978100, stream_id=1, stream_seq=28)
+2025-06-09 11:15:26,482 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:26,482 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:26,482 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978100, gaps=[])
+2025-06-09 11:15:26,702 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978101, stream_id=1, stream_seq=29)
+2025-06-09 11:15:26,702 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:26,702 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:26,702 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978101, gaps=[])
+2025-06-09 11:15:27,236 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:27,236 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999186, stream_id=1, stream_seq=31)
+2025-06-09 11:15:27,236 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:27,236 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978102, stream_id=1, stream_seq=30)
+2025-06-09 11:15:27,237 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:27,237 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:27,237 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978102, gaps=[])
+2025-06-09 11:15:27,237 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999186, gaps=[])
+2025-06-09 11:15:27,237 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:27,355 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:27,355 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999187, stream_id=1, stream_seq=32)
+2025-06-09 11:15:27,355 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:27,355 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:27,355 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999188, stream_id=1, stream_seq=33)
+2025-06-09 11:15:27,356 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999187, gaps=[])
+2025-06-09 11:15:27,356 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:27,356 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999188, gaps=[])
+2025-06-09 11:15:27,356 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:27,611 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978103, stream_id=1, stream_seq=31)
+2025-06-09 11:15:27,611 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:27,611 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:27,611 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978103, gaps=[])
+2025-06-09 11:15:27,611 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978104, stream_id=1, stream_seq=32)
+2025-06-09 11:15:27,611 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:27,612 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:27,612 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978104, gaps=[])
+2025-06-09 11:15:28,274 [INFO] Sending 122 bytes through WebRTC channel
+2025-06-09 11:15:28,274 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999189, stream_id=1, stream_seq=34)
+2025-06-09 11:15:28,274 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:28,274 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978105, stream_id=1, stream_seq=33)
+2025-06-09 11:15:28,274 [INFO] Received 122 bytes from WebRTC channel
+2025-06-09 11:15:28,274 [INFO] Wrote 122 bytes to TUN interface
+2025-06-09 11:15:28,274 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978105, gaps=[])
+2025-06-09 11:15:28,275 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999189, gaps=[])
+2025-06-09 11:15:28,275 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:28,445 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:28,446 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999190, stream_id=1, stream_seq=35)
+2025-06-09 11:15:28,446 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:28,446 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999190, gaps=[])
+2025-06-09 11:15:28,447 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:28,702 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978106, stream_id=1, stream_seq=34)
+2025-06-09 11:15:28,703 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:28,703 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:28,703 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978106, gaps=[])
+2025-06-09 11:15:28,947 [DEBUG] Connection(0) protocol(5) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'D\x8d|\x9c\xa6\x1b<=\x1a\x84\xf0\x03')
+2025-06-09 11:15:28,947 [DEBUG] Connection(0) protocol(5) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'D\x8d|\x9c\xa6\x1b<=\x1a\x84\xf0\x03')
+2025-06-09 11:15:29,248 [INFO] Sending 70 bytes through WebRTC channel
+2025-06-09 11:15:29,248 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999191, stream_id=1, stream_seq=36)
+2025-06-09 11:15:29,248 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:29,249 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999191, gaps=[])
+2025-06-09 11:15:29,249 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:29,420 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978107, stream_id=1, stream_seq=35)
+2025-06-09 11:15:29,420 [DEBUG] Received keepalive ping on data channel
+2025-06-09 11:15:29,420 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978107, gaps=[])
+2025-06-09 11:15:29,485 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:29,485 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999192, stream_id=1, stream_seq=37)
+2025-06-09 11:15:29,486 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:29,486 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:29,486 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999193, stream_id=1, stream_seq=38)
+2025-06-09 11:15:29,486 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999192, gaps=[])
+2025-06-09 11:15:29,486 [DEBUG] RTCSctpTransport(server) - T3 restart
+2025-06-09 11:15:29,487 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999193, gaps=[])
+2025-06-09 11:15:29,487 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:29,541 [DEBUG] Connection(0) protocol(3) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\xbdm_y\x8e\xea\xcadKzI\x95')
+2025-06-09 11:15:29,541 [DEBUG] Connection(0) protocol(3) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\xbdm_y\x8e\xea\xcadKzI\x95')
+2025-06-09 11:15:29,741 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978108, stream_id=1, stream_seq=36)
+2025-06-09 11:15:29,741 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:29,741 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:29,741 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978108, gaps=[])
+2025-06-09 11:15:29,741 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978109, stream_id=1, stream_seq=37)
+2025-06-09 11:15:29,741 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:29,741 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:29,741 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978109, gaps=[])
+2025-06-09 11:15:30,017 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978110, stream_id=1, stream_seq=38)
+2025-06-09 11:15:30,017 [INFO] Received 70 bytes from WebRTC channel
+2025-06-09 11:15:30,017 [INFO] Wrote 70 bytes to TUN interface
+2025-06-09 11:15:30,017 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978110, gaps=[])
+2025-06-09 11:15:31,237 [INFO] Sending 183 bytes through WebRTC channel
+2025-06-09 11:15:31,237 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999194, stream_id=1, stream_seq=39)
+2025-06-09 11:15:31,237 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:31,237 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978111, stream_id=1, stream_seq=39)
+2025-06-09 11:15:31,237 [INFO] Received 183 bytes from WebRTC channel
+2025-06-09 11:15:31,237 [INFO] Wrote 183 bytes to TUN interface
+2025-06-09 11:15:31,237 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978111, gaps=[])
+2025-06-09 11:15:31,238 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999194, gaps=[])
+2025-06-09 11:15:31,238 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:32,446 [INFO] Sending 203 bytes through WebRTC channel
+2025-06-09 11:15:32,446 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999195, stream_id=1, stream_seq=40)
+2025-06-09 11:15:32,447 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:32,447 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999195, gaps=[])
+2025-06-09 11:15:32,447 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:32,703 [DEBUG] RTCSctpTransport(server) < DataChunk(flags=3, tsn=2178978112, stream_id=1, stream_seq=40)
+2025-06-09 11:15:32,703 [INFO] Received 203 bytes from WebRTC channel
+2025-06-09 11:15:32,703 [INFO] Wrote 203 bytes to TUN interface
+2025-06-09 11:15:32,703 [DEBUG] RTCSctpTransport(server) > SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=2178978112, gaps=[])
+2025-06-09 11:15:34,136 [DEBUG] Sent keepalive ping on data channel
+2025-06-09 11:15:34,136 [DEBUG] RTCSctpTransport(server) > DataChunk(flags=3, tsn=780999196, stream_id=1, stream_seq=41)
+2025-06-09 11:15:34,136 [DEBUG] RTCSctpTransport(server) - T3 start
+2025-06-09 11:15:34,137 [DEBUG] RTCSctpTransport(server) < SackChunk(flags=0, advertised_rwnd=1048576, cumulative_tsn=780999196, gaps=[])
+2025-06-09 11:15:34,137 [DEBUG] RTCSctpTransport(server) - T3 cancel
+2025-06-09 11:15:34,428 [DEBUG] Connection(0) protocol(3) > ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'\x02\xb7\xfb\xa9\xf5l\xbbS\xa1\x00\xcf\xdb')
+2025-06-09 11:15:34,429 [DEBUG] Connection(0) protocol(3) < ('172.17.0.1', 36549) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'\x02\xb7\xfb\xa9\xf5l\xbbS\xa1\x00\xcf\xdb')
+2025-06-09 11:15:34,848 [DEBUG] Connection(0) protocol(5) < ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.REQUEST, transaction_id=b'IZ\xf3\xd3\xe6\xa0\xef\x82\xf5b\xe3\xa0')
+2025-06-09 11:15:34,849 [DEBUG] Connection(0) protocol(5) > ('172.19.0.1', 48655) Message(message_method=Method.BINDING, message_class=Class.RESPONSE, transaction_id=b'IZ\xf3\xd3\xe6\xa0\xef\x82\xf5b\xe3\xa0')
+2025-06-09 11:15:35,546 [DEBUG] RTCDtlsTransport(client) - State.CONNECTED -> State.CLOSED
+2025-06-09 11:15:35,547 [INFO] Application stopped by user
+2025-06-09 11:15:35,547 [INFO] Cleaning up before exit...
+2025-06-09 11:15:35,549 [INFO] Found existing revpn-answer interface, cleaning up...
+2025-06-09 11:15:35,570 [INFO] Successfully cleaned up revpn-answer
+2025/06/26 19:42:32 main.go:64: Opening existing TAP interface 'revpn-answer'...
+2025/06/26 19:42:32 main.go:75: Successfully opened TAP interface: revpn-answer
+2025/06/26 19:42:34 main.go:166: Connection state changed: connecting
+2025/06/26 19:42:34 main.go:166: Connection state changed: connected
+2025/06/26 19:42:34 main.go:79: New DataChannel vpntap 824635744642
+2025/06/26 19:42:34 main.go:82: Data channel opened
+2025/06/26 19:42:34 main.go:96: Read 90 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 86 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 90 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 90 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 70 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 90 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 110 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 195 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 85 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 195 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 90 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 195 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 85 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 183 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:34 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:34 main.go:112: Wrote 110 bytes to TAP
+2025/06/26 19:42:34 main.go:112: Wrote 110 bytes to TAP
+2025/06/26 19:42:34 main.go:112: Wrote 117 bytes to TAP
+2025/06/26 19:42:35 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:35 main.go:112: Wrote 215 bytes to TAP
+2025/06/26 19:42:35 main.go:96: Read 210 bytes from TAP
+2025/06/26 19:42:35 main.go:112: Wrote 210 bytes to TAP
+2025/06/26 19:42:35 main.go:96: Read 183 bytes from TAP
+2025/06/26 19:42:35 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:36 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:36 main.go:112: Wrote 215 bytes to TAP
+2025/06/26 19:42:36 main.go:96: Read 210 bytes from TAP
+2025/06/26 19:42:36 main.go:112: Wrote 210 bytes to TAP
+2025/06/26 19:42:36 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:37 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:37 main.go:112: Wrote 215 bytes to TAP
+2025/06/26 19:42:37 main.go:96: Read 210 bytes from TAP
+2025/06/26 19:42:37 main.go:112: Wrote 210 bytes to TAP
+2025/06/26 19:42:37 main.go:96: Read 70 bytes from TAP
+2025/06/26 19:42:37 main.go:96: Read 183 bytes from TAP
+2025/06/26 19:42:37 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:37 main.go:96: Read 183 bytes from TAP
+2025/06/26 19:42:38 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:38 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:38 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:38 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:38 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:38 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:38 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:38 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:38 main.go:96: Read 215 bytes from TAP
+2025/06/26 19:42:38 main.go:96: Read 210 bytes from TAP
+2025/06/26 19:42:38 main.go:112: Wrote 215 bytes to TAP
+2025/06/26 19:42:38 main.go:112: Wrote 210 bytes to TAP
+2025/06/26 19:42:39 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:39 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:39 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:39 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:39 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:39 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:39 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:39 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:40 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:42:41 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:41 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:41 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:41 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:41 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:41 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:41 main.go:96: Read 82 bytes from TAP
+2025/06/26 19:42:41 main.go:112: Wrote 82 bytes to TAP
+2025/06/26 19:42:46 main.go:96: Read 70 bytes from TAP
+2025/06/26 19:42:48 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:43:02 main.go:112: Wrote 70 bytes to TAP
+2025/06/26 19:43:03 main.go:96: Read 70 bytes from TAP
+2025/06/26 19:43:04 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:43:08 main.go:112: Wrote 183 bytes to TAP
+2025/06/26 19:43:09 main.go:96: Read 183 bytes from TAP
+2025/06/26 19:43:10 main.go:112: Wrote 203 bytes to TAP
+2025/06/26 19:43:36 main.go:96: Read 203 bytes from TAP
+2025/06/26 19:43:39 main.go:96: Read 70 bytes from TAP
+2025/06/26 19:43:52 main.go:96: Read 167 bytes from TAP
+2025/06/26 19:43:52 main.go:112: Wrote 167 bytes to TAP
+2025/06/26 19:43:52 main.go:96: Read 54 bytes from TAP
+2025/06/26 19:43:52 main.go:96: Read 87 bytes from TAP
+2025/06/26 19:43:52 main.go:112: Wrote 87 bytes to TAP
+2025/06/26 19:43:52 main.go:96: Read 107 bytes from TAP
+2025/06/26 19:43:52 main.go:112: Wrote 107 bytes to TAP
+2025/06/26 19:43:52 main.go:96: Read 54 bytes from TAP
+2025/06/26 19:43:58 main.go:118: Data channel closed
+2025/06/26 19:43:58 main.go:122: Data channel error: sending reset packet in non-established state: state=Closed
+2025/06/26 19:44:02 main.go:234: Interrupted
+2025/06/26 19:44:02 main.go:176: read: read tcp 192.168.7.195:60272->104.21.61.124:443: use of closed network connection
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed
+2025/06/26 19:44:02 main.go:91: Error reading from TAP: read tun: file already closed

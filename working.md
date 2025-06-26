@@ -78,5 +78,3 @@ This document explains how `offerer.py` and `answerer.py` collaborate to establi
 - All VPN traffic is shared between the two scripts via the WebRTC data channel, creating a virtual network link.
 
 ---
-
-*Let me know if you want a diagram or more details on any step!*

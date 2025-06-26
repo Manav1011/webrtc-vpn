@@ -6,13 +6,12 @@ from aiortc import RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, RT
 import time
 import tuntap
 import ipaddress
-import subprocess
 import sys
 
 
 # Add DEBUG logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Changed from INFO to DEBUG
+    level=logging.INFO,  # Changed from INFO to DEBUG
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[        
         logging.StreamHandler(),
@@ -20,23 +19,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger('answerer')
-
-def cleanup_tun_interface(name):
-    """Clean up existing TUN interface if it exists"""
-    try:
-        # Check if interface exists
-        result = subprocess.run(["ip", "link", "show", name], capture_output=True)
-        if result.returncode == 0:
-            logger.info(f"Found existing {name} interface, cleaning up...")
-            # Bring interface down
-            subprocess.run(["ip", "link", "set", name, "down"], check=True)
-            # Delete interface
-            subprocess.run(["ip", "link", "delete", name], check=True)
-            logger.info(f"Successfully cleaned up {name}")
-    except subprocess.CalledProcessError as e:
-        logger.debug(f"No cleanup needed for {name}: {e}")
-    except Exception as e:
-        logger.error(f"Error during cleanup of {name}: {e}")
 
 async def wait_for_signaling_server(url, retry_interval=30):
     while True:
@@ -62,73 +44,44 @@ async def wait_for_ice_connected(pc):
     await connected.wait()
 
 def tun_start(tap, channel):
-    logger.info("Starting TUN interface and relay")
-    max_retries = 3
-    retry_count = 0
-    
-    while retry_count < max_retries:
-        try:
-            tap.open()
-            break
-        except OSError as e:
-            if e.errno == 16:  # Device or resource busy
-                retry_count += 1
-                logger.warning(f"TUN device busy, attempt {retry_count}/{max_retries}")
-                cleanup_tun_interface(tap.name)
-                time.sleep(1)
-                if retry_count == max_retries:
-                    raise RuntimeError(f"Failed to open TUN device after {max_retries} attempts")
-            else:
-                raise
-        except Exception as e:
-            logger.error(f"Failed to open TAP device {tap.name}: {e}")
-            raise
+    logger.info("Starting TAP interface and relay")
+    try:
+        tap.open()
+    except Exception as e:
+        logger.error(f"Failed to open TAP device {tap.name}: {e}")
+        raise
 
     def handle_incoming_data(data):
         try:
             if data == b"ping":
                 logger.debug("Received keepalive ping on data channel")
                 return
-            logger.info(f"Received {len(data)} bytes from WebRTC channel")
             try:
                 result = tap.fd.write(data)
-                logger.info(f"Wrote {len(data)} bytes to TUN interface")
                 return result
             except Exception as e:
-                logger.error(f"Error writing to TUN interface: {e}", exc_info=True)
+                logger.error(f"Error writing to TAP interface: {e}", exc_info=True)
         except Exception as e:
             logger.error(f"Exception in handle_incoming_data: {e}", exc_info=True)
     channel.on("message")(handle_incoming_data)
 
-    def tun_reader():
+    def tap_reader():
         try:
             if not tap.fd or tap.fd.closed:
-                logger.error("TUN interface is closed")
+                logger.error("TAP interface is closed")
                 return
             try:
                 data = tap.fd.read(tap.mtu)
                 if data:
-                    logger.info(f"Sending {len(data)} bytes through WebRTC channel")
                     channel.send(data)
             except Exception as e:
-                logger.error(f"Error reading from TUN interface: {e}", exc_info=True)
+                logger.error(f"Error reading from TAP interface: {e}", exc_info=True)
         except Exception as e:
-            logger.error(f"Exception in tun_reader: {e}", exc_info=True)
-            
+            logger.error(f"Exception in tap_reader: {e}", exc_info=True)
     loop = asyncio.get_event_loop()
-    loop.add_reader(tap.fd, tun_reader)
+    loop.add_reader(tap.fd, tap_reader)
     tap.up()
-    # Set IP address after interface is up
-    try:
-        subprocess.run(["ip", "address", "add", "172.16.0.2/24", "dev", tap.name], check=True)
-        logger.info(f"Assigned 172.16.0.2/24 to {tap.name}")
-        # Set MTU to 1300 for the answerer side
-        subprocess.run(["ip", "link", "set", "dev", tap.name, "mtu", "1300"], check=True)
-        logger.info(f"Set MTU 1300 for {tap.name}")
-    except Exception as e:
-        logger.error(f"Failed to assign IP or set MTU to {tap.name}: {e}")
-    
-    return tap.fd  # Return the file descriptor for cleanup
+    return tap.fd
 
 async def run():
     if len(sys.argv) < 2:
@@ -140,13 +93,9 @@ async def run():
         tap = None
         reader_handle = None
         pc = None
-        channel_ref = {"channel": None}  # Using a dict to store mutable reference
-        
+        channel_ref = {"channel": None}
         await wait_for_signaling_server(signaling_url)
         try:
-            # Add cleanup before creating TUN interface
-            cleanup_tun_interface("revpn-answer")
-            
             logger.info("Creating RTCPeerConnection with STUN server")
             stun_servers = [
                 RTCIceServer(urls="stun:stun.l.google.com:19302"),
@@ -159,37 +108,33 @@ async def run():
             pc = RTCPeerConnection(configuration=config)
             tap = tuntap.Tun(name="revpn-answer")
             reconnect_event = asyncio.Event()
-
             ready = asyncio.Event()
-            # Add data channel close/error handlers and keepalive ping
             @pc.on("datachannel")
             def on_datachannel(channel):
                 nonlocal ready, reader_handle
                 channel_ref["channel"] = channel
                 logger.info(f"Data channel {channel.label} established")
                 if channel.label == "vpntap":
-                    # VPN relay logic: wait for ICE, then start TUN
                     async def check_ready():
                         logger.info("Waiting for ICE to connect...")
                         await wait_for_ice_connected(pc)
                         logger.info("ICE connected.")
                         ready.set()
-                    async def start_tun_when_ready():
+                    async def start_tap_when_ready():
                         await ready.wait()
-                        logger.info("Starting TUN interface")
+                        logger.info("Starting TAP interface")
                         nonlocal reader_handle
                         reader_handle = tun_start(tap, channel)
                     if channel.readyState == "open":
                         logger.info("Data channel is already open, waiting for ICE connection")
                         asyncio.create_task(check_ready())
-                        asyncio.create_task(start_tun_when_ready())
+                        asyncio.create_task(start_tap_when_ready())
                     else:
                         @channel.on("open")
                         def on_open():
                             logger.info("Data channel is open, waiting for ICE connection")
                             asyncio.create_task(check_ready())
-                            asyncio.create_task(start_tun_when_ready())
-                    # Add keepalive ping every 10 seconds
+                            asyncio.create_task(start_tap_when_ready())
                     async def keepalive_ping():
                         while True:
                             try:
@@ -201,14 +146,12 @@ async def run():
                                 logger.error(f"Keepalive ping error: {e}")
                                 break
                     asyncio.create_task(keepalive_ping())
-
                     @channel.on("close")
                     def on_close():
                         logger.warning("Data channel closed!")
                     @channel.on("error")
                     def on_error(e):
                         logger.error(f"Data channel error: {e}")
-
             @pc.on("connectionstatechange")
             def on_connectionstatechange():
                 nonlocal tap, reader_handle
@@ -220,17 +163,17 @@ async def run():
                         asyncio.create_task(ws.close())
                 elif pc.connectionState in ("disconnected", "failed", "closed"):
                     logger.warning("WebRTC state: lost (ICE disconnected/failed/closed), will attempt to reconnect")
-                    # Clean up TUN interface reader
+                    # Clean up TAP interface reader
                     if reader_handle:
                         loop = asyncio.get_event_loop()
                         loop.remove_reader(tap.fd)
                         reader_handle = None
-                    # Clean up TUN interface
+                    # Clean up TAP interface
                     if tap:
                         try:
                             tap.close()
                         except Exception as e:
-                            logger.error(f"Error closing TUN interface: {e}")
+                            logger.error(f"Error closing TAP interface: {e}")
                     asyncio.create_task(pc.close())
                     reconnect_event.set()
 
@@ -298,13 +241,9 @@ async def run():
             ws = None
 
 if __name__ == "__main__":
-    tap_name = "revpn-answer"
     try:
         asyncio.run(run())
     except KeyboardInterrupt:
         logger.info("Application stopped by user")
     except Exception as e:
         logger.error(f"Application error: {str(e)}")
-    finally:
-        logger.info("Cleaning up before exit...")
-        cleanup_tun_interface(tap_name)
