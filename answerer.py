@@ -16,7 +16,7 @@ logging.basicConfig(
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[        
         logging.StreamHandler(),
-        logging.FileHandler('answerer.log', mode='a')
+        logging.FileHandler('/tmp/answerer.log', mode='a')
     ]
 )
 logger = logging.getLogger('answerer')

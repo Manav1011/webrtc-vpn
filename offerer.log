@@ -1,0 +1,233 @@
+2025-06-27 15:44:46,173 [INFO] Signaling server is online.
+2025-06-27 15:44:46,548 [INFO] Creating RTCPeerConnection with STUN server
+2025-06-27 15:44:46,551 [INFO] Created data channel 'vpntap'
+2025-06-27 15:44:46,551 [INFO] Connecting to signaling server...
+2025-06-27 15:44:47,549 [INFO] Registering as offerer
+2025-06-27 15:45:05,518 [INFO] Received message type: ready
+2025-06-27 15:45:05,519 [INFO] Both peers are online. Proceeding to create offer.
+2025-06-27 15:45:05,519 [INFO] Creating offer
+2025-06-27 15:45:05,579 [INFO] Set local description
+2025-06-27 15:45:05,579 [INFO] Sending offer to answerer
+2025-06-27 15:45:11,114 [INFO] Received message type: answer
+2025-06-27 15:45:11,114 [INFO] Processing answer from peer
+2025-06-27 15:45:11,114 [INFO] Set remote description
+2025-06-27 15:45:11,114 [INFO] Connection state changed to: connecting
+2025-06-27 15:45:11,114 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 41881) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 49768) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 58544) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 59869) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 52482) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42874) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 42162) -> ('172.31.13.27', 52414)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 41881) -> ('10.0.0.2', 54852)) State.FROZEN -> State.WAITING
+2025-06-27 15:45:11,115 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 41881) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,135 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 49768) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,155 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 58544) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,176 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 59869) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,196 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 52482) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,217 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42874) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,237 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 42162) -> ('172.31.13.27', 52414)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,257 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 41881) -> ('10.0.0.2', 54852)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:45:11,278 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 49768) -> ('10.0.0.2', 54852)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,298 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 58544) -> ('10.0.0.2', 54852)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,318 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 59869) -> ('10.0.0.2', 54852)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,338 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 52482) -> ('10.0.0.2', 54852)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,359 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42874) -> ('10.0.0.2', 54852)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,379 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 42162) -> ('10.0.0.2', 54852)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,399 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 41881) -> ('3.110.248.202', 52414)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:45:11,412 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 41881) -> ('3.110.248.202', 52414)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-27 15:45:11,412 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 49768) -> ('3.110.248.202', 52414)) State.FROZEN -> State.FAILED
+2025-06-27 15:45:11,412 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 58544) -> ('3.110.248.202', 52414)) State.FROZEN -> State.FAILED
+2025-06-27 15:45:11,412 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 59869) -> ('3.110.248.202', 52414)) State.FROZEN -> State.FAILED
+2025-06-27 15:45:11,412 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 52482) -> ('3.110.248.202', 52414)) State.FROZEN -> State.FAILED
+2025-06-27 15:45:11,413 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42874) -> ('3.110.248.202', 52414)) State.FROZEN -> State.FAILED
+2025-06-27 15:45:11,413 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 42162) -> ('3.110.248.202', 52414)) State.FROZEN -> State.FAILED
+2025-06-27 15:45:11,413 [INFO] Connection(0) ICE completed
+2025-06-27 15:45:11,941 [INFO] Connection state changed to: connected
+2025-06-27 15:45:11,942 [INFO] WebRTC state: connected (ICE completed, DTLS connected)
+2025-06-27 15:45:11,942 [INFO] P2P connection established, closing websocket connection.
+2025-06-27 15:45:11,989 [INFO] Data channel is open, waiting for ICE connection
+2025-06-27 15:45:11,989 [INFO] Waiting for ICE to connect...
+2025-06-27 15:45:11,989 [INFO] ICE connection state changed to completed
+2025-06-27 15:45:11,989 [INFO] ICE connected.
+2025-06-27 15:45:11,989 [INFO] Starting TUN interface
+2025-06-27 15:45:11,989 [INFO] Starting TUN interface and relay
+2025-06-27 15:45:11,991 [INFO] Assigned 172.16.0.1/24 to b'office'
+2025-06-27 15:45:11,993 [INFO] Set MTU 1300 for b'office'
+2025-06-27 15:45:53,070 [INFO] Signaling server is online.
+2025-06-27 15:45:53,355 [INFO] Found existing home interface, cleaning up...
+2025-06-27 15:45:53,359 [INFO] Creating RTCPeerConnection with STUN server
+2025-06-27 15:45:53,362 [INFO] Created data channel 'vpntap'
+2025-06-27 15:45:53,363 [INFO] Connecting to signaling server...
+2025-06-27 15:45:54,358 [INFO] Registering as offerer
+2025-06-27 15:46:07,038 [INFO] Received message type: ready
+2025-06-27 15:46:07,038 [INFO] Both peers are online. Proceeding to create offer.
+2025-06-27 15:46:07,038 [INFO] Creating offer
+2025-06-27 15:46:07,071 [INFO] Set local description
+2025-06-27 15:46:07,071 [INFO] Sending offer to answerer
+2025-06-27 15:46:12,772 [INFO] Received message type: answer
+2025-06-27 15:46:12,772 [INFO] Processing answer from peer
+2025-06-27 15:46:12,775 [INFO] Set remote description
+2025-06-27 15:46:12,775 [INFO] Connection state changed to: connecting
+2025-06-27 15:46:12,776 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,776 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('192.168.29.18', 37181)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('10.0.0.1', 53521)) State.FROZEN -> State.WAITING
+2025-06-27 15:46:12,777 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,797 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,818 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,838 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,859 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,879 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,900 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,920 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('192.168.29.18', 37181)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,940 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('10.0.0.1', 53521)) State.WAITING -> State.IN_PROGRESS
+2025-06-27 15:46:12,961 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:12,981 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,002 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,022 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,043 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,063 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,083 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('10.0.0.1', 53521)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,103 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,124 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,144 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,164 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,185 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,205 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,225 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,245 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.21.0.1', 51792)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,266 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,286 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,307 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,327 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,349 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,369 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,390 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,410 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.22.0.1', 60934)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,431 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,451 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,471 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,492 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,513 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,534 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,554 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,574 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.23.0.1', 32775)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,595 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,615 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,635 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,656 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,676 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,697 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,717 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,737 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.17.0.1', 41918)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,758 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,778 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,799 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,819 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,839 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,860 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,880 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,901 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.20.0.1', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,921 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,941 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,962 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:13,982 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,003 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,024 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,044 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,065 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.18.0.1', 35675)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,085 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,105 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,126 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,146 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,167 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,187 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,207 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,228 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('172.19.0.1', 38262)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,248 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,269 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,289 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,310 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,330 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,351 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 56311)) State.FROZEN -> State.IN_PROGRESS
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 56311)) State.IN_PROGRESS -> State.SUCCEEDED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 56311)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 56311)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 32775)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,356 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 51792)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 35675)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 37181)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 41918)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,357 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 60934)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('192.168.7.195', 58110) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.17.0.1', 47842) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.20.0.1', 51486) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.21.0.1', 54922) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.19.0.1', 41347) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.18.0.1', 42898) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.22.0.1', 53779) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) Check CandidatePair(('172.16.0.1', 48102) -> ('49.36.64.234', 38262)) State.FROZEN -> State.FAILED
+2025-06-27 15:46:14,358 [INFO] Connection(0) ICE completed
+2025-06-27 15:46:14,667 [INFO] Connection state changed to: connected
+2025-06-27 15:46:14,667 [INFO] WebRTC state: connected (ICE completed, DTLS connected)
+2025-06-27 15:46:14,667 [INFO] P2P connection established, closing websocket connection.
+2025-06-27 15:46:14,762 [INFO] Data channel is open, waiting for ICE connection
+2025-06-27 15:46:14,762 [INFO] Waiting for ICE to connect...
+2025-06-27 15:46:14,763 [INFO] ICE connection state changed to completed
+2025-06-27 15:46:14,763 [INFO] ICE connected.
+2025-06-27 15:46:14,763 [INFO] Starting TUN interface
+2025-06-27 15:46:14,763 [INFO] Starting TUN interface and relay
+2025-06-27 15:46:14,765 [INFO] Assigned 172.16.0.3/24 to b'home'
+2025-06-27 15:46:14,766 [INFO] Set MTU 1300 for b'home'
+2025-06-27 15:49:19,338 [INFO] Application stopped by user
+2025-06-27 15:49:19,338 [INFO] Cleaning up before exit...
+2025-06-27 15:49:19,339 [INFO] Found existing office interface, cleaning up...
+2025-06-27 15:49:19,363 [INFO] Successfully cleaned up office

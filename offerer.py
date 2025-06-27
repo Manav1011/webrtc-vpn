@@ -16,7 +16,7 @@ logging.basicConfig(
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[        
         logging.StreamHandler(),
-        logging.FileHandler('offerer.log', mode='a')
+        logging.FileHandler('/tmp/offerer.log', mode='a')
     ]
 )
 logger = logging.getLogger('offerer')
