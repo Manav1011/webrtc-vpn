@@ -2,11 +2,11 @@ OFFERER
 sudo ip tuntap add dev revpn-offer mode tap
 sudo ip link set revpn-offer up
 sudo ip addr add 172.16.0.1/24 dev revpn-offer
-sudo ip link set dev revpn-offer mtu 1300
+sudo ip link set dev revpn-offer mtu 1500
 
 
 ANSWERER
 sudo ip tuntap add dev revpn-answer mode tap
 sudo ip link set revpn-answer up
 sudo ip addr add 172.16.0.2/24 dev revpn-answer
-sudo ip link set dev revpn-answer mtu 1300
+sudo ip link set dev revpn-answer mtu 1500

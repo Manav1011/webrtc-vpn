@@ -3,13 +3,13 @@ package main
 import (
 	"crypto/tls"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/url"
 	"os"
 	"sync"
 	"time"
-
 	"webrtc-vpn-go/pkg/signaling"
 
 	"github.com/gorilla/websocket"
@@ -80,12 +80,12 @@ func run(roomID string) error {
 	tunConfig := water.Config{
 		DeviceType: water.TAP,
 		PlatformSpecificParams: water.PlatformSpecificParams{
-			Name:    "revpn-offer",
+			Name:    "revpn-offer_",
 			Persist: true,
 		},
 	}
 
-	log.Println("Opening existing TAP interface 'revpn-offer'...")
+	log.Println("Opening existing TAP interface 'revpn-offer_'...")
 	tap, err := water.New(tunConfig)
 	if err != nil {
 		log.Printf("Failed to open TAP interface: %v\n", err)
@@ -107,6 +107,7 @@ func run(roomID string) error {
 	// Handle connection state changes
 	reconnectChan := make(chan struct{})
 	var closeOnce sync.Once
+	var connectionFailed bool
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
 		log.Printf("Connection state changed to: %s\n", s.String())
 		switch s {
@@ -116,6 +117,7 @@ func run(roomID string) error {
 			log.Printf("WebRTC state: %s (ICE disconnected/failed/closed)\n", s.String())
 			closeOnce.Do(func() {
 				close(reconnectChan)
+				connectionFailed = true
 			})
 		}
 	})
@@ -197,6 +199,9 @@ func run(roomID string) error {
 
 	// Wait for ready message
 	for {
+		if connectionFailed {
+			return fmt.Errorf("connection failed, triggering reconnect")
+		}
 		var msg signaling.Message
 		if err := c.ReadJSON(&msg); err != nil {
 			return err

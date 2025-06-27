@@ -7,6 +7,7 @@ import time
 import tuntap
 import ipaddress
 import ssl
+import subprocess
 import sys
 
 # Configure logging
@@ -48,13 +49,45 @@ def is_private_ip(ip):
     except ValueError:
         return False
 
-def tun_start(tap, channel):
-    logger.info("Starting TAP interface and relay")
+def cleanup_tun_interface(name):
+    """Clean up existing TUN interface if it exists"""
     try:
-        tap.open()
+        # Check if interface exists
+        result = subprocess.run(["ip", "link", "show", name], capture_output=True)
+        if result.returncode == 0:
+            logger.info(f"Found existing {name} interface, cleaning up...")
+            # Bring interface down
+            subprocess.run(["ip", "link", "set", name, "down"], check=True)
+            # Delete interface
+            subprocess.run(["ip", "link", "delete", name], check=True)
+            logger.info(f"Successfully cleaned up {name}")
+    except subprocess.CalledProcessError as e:
+        logger.debug(f"No cleanup needed for {name}: {e}")
     except Exception as e:
-        logger.error(f"Failed to open TAP device {tap.name}: {e}")
-        raise
+        logger.error(f"Error during cleanup of {name}: {e}")
+
+def tun_start(tap, channel):
+    logger.info("Starting TUN interface and relay")
+    max_retries = 3
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            tap.open()
+            break
+        except OSError as e:
+            if e.errno == 16:  # Device or resource busy
+                retry_count += 1
+                logger.warning(f"TUN device busy, attempt {retry_count}/{max_retries}")
+                cleanup_tun_interface(tap.name)
+                time.sleep(1)
+                if retry_count == max_retries:
+                    raise RuntimeError(f"Failed to open TUN device after {max_retries} attempts")
+            else:
+                raise
+        except Exception as e:
+            logger.error(f"Failed to open TAP device {tap.name}: {e}")
+            raise
 
     def handle_incoming_data(data):
         try:
@@ -65,28 +98,39 @@ def tun_start(tap, channel):
                 result = tap.fd.write(data)
                 return result
             except Exception as e:
-                logger.error(f"Error writing to TAP interface: {e}", exc_info=True)
+                logger.error(f"Error writing to TUN interface: {e}", exc_info=True)
         except Exception as e:
             logger.error(f"Exception in handle_incoming_data: {e}", exc_info=True)
     channel.on("message")(handle_incoming_data)
 
-    def tap_reader():
+    def tun_reader():
         try:
             if not tap.fd or tap.fd.closed:
-                logger.error("TAP interface is closed")
+                logger.error("TUN interface is closed")
                 return
             try:
                 data = tap.fd.read(tap.mtu)
                 if data:
                     channel.send(data)
             except Exception as e:
-                logger.error(f"Error reading from TAP interface: {e}", exc_info=True)
+                logger.error(f"Error reading from TUN interface: {e}", exc_info=True)
         except Exception as e:
-            logger.error(f"Exception in tap_reader: {e}", exc_info=True)
+            logger.error(f"Exception in tun_reader: {e}", exc_info=True)
+            
     loop = asyncio.get_event_loop()
-    loop.add_reader(tap.fd, tap_reader)
+    loop.add_reader(tap.fd, tun_reader)
     tap.up()
-    return tap.fd
+    # Set IP address after interface is up
+    try:
+        subprocess.run(["ip", "address", "add", "172.16.0.1/24", "dev", tap.name], check=True)
+        logger.info(f"Assigned 172.16.0.1/24 to {tap.name}")
+        # Set MTU to 1300 for the offerer side
+        subprocess.run(["ip", "link", "set", "dev", tap.name, "mtu", "1300"], check=True)
+        logger.info(f"Set MTU 1300 for {tap.name}")
+    except Exception as e:
+        logger.error(f"Failed to assign IP or set MTU to {tap.name}: {e}")
+    
+    return tap.fd  # Return the file descriptor for cleanup
 
 async def wait_for_ice_connected(pc):
     connected = asyncio.Event()
@@ -101,29 +145,20 @@ async def wait_for_ice_connected(pc):
     check_state()
     await connected.wait()
 
-async def run():
-    if len(sys.argv) < 2:
-        print("Usage: python offerer.py <room_id>")
-        sys.exit(1)
-    room_id = str(sys.argv[1])
-    signaling_url = "wss://webrtc-vpn.mnv-dev.site"
+async def run(room_id):
+    signaling_url = "wss://webrtc-tunnel.mnv.rocks/ws"
     ssl_context = ssl._create_unverified_context()
-    browser_headers = {
-        "Origin": "https://webrtc-vpn.mnv-dev.site",
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-        "Pragma": "no-cache",
-        "Cache-Control": "no-cache",
-        "Accept-Encoding": "gzip, deflate, br, zstd",
-        "Accept-Language": "en-US,en;q=0.9",
-        # Replace with your actual cf_clearance value
-        "Cookie": "cf_clearance=z31K.46Cp3n5IpXHNiPBGuxUysFtT0O0kOosh9PJ6.A-1748719877-1.2.1.1-Lr.jHqZ9FnkoIwKy81b569PLjeTCtHme_erqTTIa.VslXwXs623NhWz3Wem7n5J3hD7vS5.NDIJt8gkXbUMNMdEFbVWThgxU5tcF1syJHL98JDyklZNkuxGZJuGIErIRyDAHYJ2zoWjpkKUNr5sFBGY2t.kFVRL3IGvHzyjRyAWINxZhVolhDbdrrWAugmKiqDD9UidsrQFA9JtfMIMrQcSdc.qf1R73UZuhjDxHWrp3ixtXZZO9culhnfBOgApwy5AIDyeqh8GVODOOPhHua9OQMhGvIkHUOxscDVkfRNd_o6n5qrxztAgR6ysiexwqeqyvVri2dluDh2l7m1faLs8GG8g7JmyCC2hwZ8R2XLFYQ0qyBlCH._BzJNJa6pfL"
-    }
+    tap_name = room_id
     while True:
         tap = None
         reader_handle = None
         pc = None
+        
         await wait_for_signaling_server(signaling_url)
         try:
+            # Add cleanup before creating TUN interface
+            cleanup_tun_interface(tap_name)
+
             logger.info("Creating RTCPeerConnection with STUN server")
             stun_servers = [
                 RTCIceServer(urls="stun:stun.l.google.com:19302"),
@@ -134,10 +169,11 @@ async def run():
             ]
             config = RTCConfiguration(iceServers=stun_servers)
             pc = RTCPeerConnection(configuration=config)
-            tap = tuntap.Tun(name="revpn-offer")
+            tap = tuntap.Tun(name=tap_name)
             reconnect_event = asyncio.Event()
+
+            # Create the data channel for VPN traffic (like vpn.py)
             channel = pc.createDataChannel("vpntap")
-            channel.bufferedAmountLowThreshold = 65536
             logger.info("Created data channel 'vpntap'")
 
             # Add keepalive ping every 10 seconds
@@ -171,13 +207,13 @@ async def run():
                     await wait_for_ice_connected(pc)
                     logger.info("ICE connected.")
                     ready.set()
-                async def start_tap_when_ready():
+                async def start_tun_when_ready():
                     await ready.wait()
-                    logger.info("Starting TAP interface")
+                    logger.info("Starting TUN interface")
                     nonlocal reader_handle
                     reader_handle = tun_start(tap, channel)
                 asyncio.create_task(check_ready())
-                asyncio.create_task(start_tap_when_ready())
+                asyncio.create_task(start_tun_when_ready())
 
             @pc.on("connectionstatechange")
             def on_connectionstatechange():
@@ -196,36 +232,29 @@ async def run():
                         loop = asyncio.get_event_loop()
                         loop.remove_reader(tap.fd)
                         reader_handle = None
-                    # Clean up TUN interface
+                    # Clean up TUN interface only if up
                     if tap:
                         try:
-                            tap.close()
+                            if hasattr(tap, 'is_up') and tap.is_up():
+                                logging.info(f"Bringing down TUN interface {tap.name}")
+                                tap.close()
                         except Exception as e:
                             logger.error(f"Error closing TUN interface: {e}")
                     asyncio.create_task(pc.close())
                     reconnect_event.set()
 
-            # Add ICE and STUN event logging
-            @pc.on("iceconnectionstatechange")
-            def on_iceconnectionstatechange():
-                logger.info(f"[ICE] iceConnectionState changed: {pc.iceConnectionState}")
-            @pc.on("icegatheringstatechange")
-            def on_icegatheringstatechange():
-                logger.info(f"[ICE] iceGatheringState changed: {pc.iceGatheringState}")
-            @pc.on("signalingstatechange")
-            def on_signalingstatechange():
-                logger.info(f"[ICE] signalingState changed: {pc.signalingState}")
             @pc.on("icecandidate")
-            async def on_icecandidate(event):
-                logger.info(f"[ICE] New ICE candidate: {event.candidate}")
-                if event.candidate and ws:
-                    await ws.send(json.dumps({
-                        "type": "candidate",
-                        "target": "answerer",
-                        "candidate": event.candidate,
-                        "sdpMid": event.sdpMid,
-                        "sdpMLineIndex": event.sdpMLineIndex,
-                    }))
+            async def on_icecandidate(candidate):
+                if candidate:
+                    logger.info(f"Generated ICE candidate: {candidate}")
+                    if ws:
+                        await ws.send(json.dumps({
+                            "type": "candidate",
+                            "target": "answerer",
+                            "candidate": candidate.candidate,
+                            "sdpMid": candidate.sdpMid,
+                            "sdpMLineIndex": candidate.sdpMLineIndex,
+                        }))
 
             ws = None
             try:
@@ -247,7 +276,6 @@ async def run():
                             break
                     logger.info("Creating offer")
                     offer = await pc.createOffer()
-                    print(offer.sdp)
                     await pc.setLocalDescription(offer)
                     logger.info("Set local description")
 
@@ -264,7 +292,6 @@ async def run():
                         if data["type"] == "answer":
                             logger.info("Processing answer from peer")
                             answer = RTCSessionDescription(sdp=data["sdp"], type="answer")
-                            print(answer.sdp)
                             await pc.setRemoteDescription(answer)
                             logger.info("Set remote description")
                         elif data["type"] == "candidate":
@@ -285,9 +312,21 @@ async def run():
             ws = None
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python offerer.py <room_id>")
+        sys.exit(1)
+
+    room_id = str(sys.argv[1])
+
+    if len(room_id) > 15:
+        print("Error: room_id must not exceed 15 characters (required for Linux interface naming).")
+        sys.exit(1)
     try:
-        asyncio.run(run())
+        asyncio.run(run(room_id))
     except KeyboardInterrupt:
         logger.info("Application stopped by user")
     except Exception as e:
         logger.error(f"Application error: {str(e)}")
+    finally:
+        logger.info("Cleaning up before exit...")
+        cleanup_tun_interface(room_id)
