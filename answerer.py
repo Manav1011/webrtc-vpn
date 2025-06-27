@@ -61,11 +61,10 @@ async def wait_for_ice_connected(pc):
     check_state()
     await connected.wait()
 
-def tun_start(tap, channel):
+def tun_start(tap, channel, ip_last_digit):
     logger.info("Starting TUN interface and relay")
     max_retries = 3
     retry_count = 0
-    
     # Always use string for interface name
     if isinstance(tap.name, bytes):
         tap_name_str = tap.name.decode()
@@ -122,9 +121,10 @@ def tun_start(tap, channel):
     loop.add_reader(tap.fd, tun_reader)
     tap.up()
     # Set IP address after interface is up
+    ip_addr = f"172.16.0.{ip_last_digit}/24"
     try:
-        subprocess.run(["ip", "address", "add", "172.16.0.2/24", "dev", tap_name_str], check=True)
-        logger.info(f"Assigned 172.16.0.2/24 to {tap_name_str}")
+        subprocess.run(["ip", "address", "add", ip_addr, "dev", tap_name_str], check=True)
+        logger.info(f"Assigned {ip_addr} to {tap_name_str}")
         # Set MTU to 1300 for the answerer side
         subprocess.run(["ip", "link", "set", "dev", tap_name_str, "mtu", "1300"], check=True)
         logger.info(f"Set MTU 1300 for {tap_name_str}")
@@ -133,7 +133,7 @@ def tun_start(tap, channel):
     
     return tap.fd  # Return the file descriptor for cleanup
 
-async def run(room_id):
+async def run(room_id, ip_last_digit):
     tap_name = room_id
     signaling_url = "wss://webrtc-tunnel.mnv.rocks/ws"
     while True:
@@ -178,7 +178,7 @@ async def run(room_id):
                         await ready.wait()
                         logger.info("Starting TUN interface")
                         nonlocal reader_handle
-                        reader_handle = tun_start(tap, channel)
+                        reader_handle = tun_start(tap, channel, ip_last_digit)
                     if channel.readyState == "open":
                         logger.info("Data channel is already open, waiting for ICE connection")
                         asyncio.create_task(check_ready())
@@ -299,16 +299,17 @@ async def run(room_id):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python offerer.py <room_id>")
+    if len(sys.argv) < 3:
+        print("Usage: python answerer.py <room_id> <ip_last_digit>")
         sys.exit(1)
 
     room_id = str(sys.argv[1])
+    ip_last_digit = str(int(sys.argv[2]))
     if len(room_id) > 15:
         print("Error: room_id must not exceed 15 characters (required for Linux interface naming).")
         sys.exit(1)
     try:
-        asyncio.run(run(room_id))
+        asyncio.run(run(room_id, ip_last_digit))
     except KeyboardInterrupt:
         logger.info("Application stopped by user")
     except Exception as e:
