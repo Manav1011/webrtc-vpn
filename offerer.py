@@ -147,7 +147,7 @@ async def wait_for_ice_connected(pc):
     await connected.wait()
 
 async def run(room_id, ip_last_digit):
-    signaling_url = "wss://webrtc-tunnel.mnv.rocks/ws"
+    signaling_url = "wss://webrtc-vpn.mnv-dev.site/ws"
     ssl_context = ssl._create_unverified_context()
     tap_name = room_id
     while True:

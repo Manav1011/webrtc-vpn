@@ -5,10 +5,8 @@ import logging
 from aiortc import RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, RTCIceServer, RTCConfiguration
 import time
 import tuntap
-import ipaddress
 import subprocess
 import sys
-
 
 # Add DEBUG logging
 logging.basicConfig(
@@ -135,7 +133,7 @@ def tun_start(tap, channel, ip_last_digit):
 
 async def run(room_id, ip_last_digit):
     tap_name = room_id
-    signaling_url = "wss://webrtc-tunnel.mnv.rocks/ws"
+    signaling_url = "wss://webrtc-vpn.mnv-dev.site/ws"
     while True:
         tap = None
         reader_handle = None
