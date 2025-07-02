@@ -116,7 +116,6 @@ def tun_start(tap, channel, ip_last_digit):
                 logger.error(f"Error reading from TUN interface: {e}", exc_info=True)
         except Exception as e:
             logger.error(f"Exception in tun_reader: {e}", exc_info=True)
-            
     loop = asyncio.get_event_loop()
     loop.add_reader(tap.fd, tun_reader)
     tap.up()

@@ -6,7 +6,7 @@ sudo ip link set dev revpn-offer mtu 1500
 
 
 ANSWERER
-sudo ip tuntap add dev revpn-answer mode tap
-sudo ip link set revpn-answer up
-sudo ip addr add 172.16.0.2/24 dev revpn-answer
-sudo ip link set dev revpn-answer mtu 1500
+sudo ip tuntap add dev revpn-answer_ mode tap
+sudo ip link set revpn-answer_ up
+sudo ip addr add 172.16.0.2/24 dev revpn-answer_
+sudo ip link set dev revpn-answer_ mtu 1500

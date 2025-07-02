@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"os/exec"
 	"sync"
 	"time"
 	"webrtc-vpn-go/pkg/signaling"
@@ -25,18 +26,7 @@ func main() {
 		log.Fatal("Room ID is required")
 	}
 
-	for {
-		if err := run(*roomID); err != nil {
-			log.Printf("Error in run: %v. Reconnecting in 3 seconds...", err)
-			time.Sleep(3 * time.Second)
-			continue
-		}
-	}
-}
-
-func run(roomID string) error {
-	// Create WebSocket connection
-	u := url.URL{Scheme: "wss", Host: "webrtc-vpn.mnv-dev.site"}
+	u := url.URL{Scheme: "wss", Host: "webrtc-vpn.mnv-dev.site", Path: "/ws"}
 	log.Printf("Connecting to %s", u.String())
 
 	dialer := websocket.Dialer{
@@ -45,21 +35,35 @@ func run(roomID string) error {
 
 	c, _, err := dialer.Dial(u.String(), nil)
 	if err != nil {
-		return err
+		log.Fatalf("Failed to connect to signaling server: %v", err)
 	}
 	defer c.Close()
 
-	// Register as offerer
+	var wsWriteMu sync.Mutex
+
 	registerMsg := signaling.Message{
 		Type: "register",
 		Role: "offerer",
-		Room: roomID,
+		Room: *roomID,
 	}
+	wsWriteMu.Lock()
 	if err := c.WriteJSON(registerMsg); err != nil {
-		return err
+		wsWriteMu.Unlock()
+		log.Fatalf("Failed to register: %v", err)
 	}
+	wsWriteMu.Unlock()
 
-	// Create a new RTCPeerConnection
+	for {
+		err := runWithSignaling(c, &wsWriteMu)
+		if err != nil {
+			log.Printf("Error in run: %v. Reconnecting PeerConnection in 3 seconds...", err)
+			time.Sleep(3 * time.Second)
+			continue
+		}
+	}
+}
+
+func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	config := webrtc.Configuration{
 		ICEServers: []webrtc.ICEServer{
 			{URLs: []string{"stun:stun.l.google.com:19302"}},
@@ -76,7 +80,6 @@ func run(roomID string) error {
 	}
 	defer peerConnection.Close()
 
-	// Open the existing TAP interface
 	tunConfig := water.Config{
 		DeviceType: water.TAP,
 		PlatformSpecificParams: water.PlatformSpecificParams{
@@ -98,13 +101,18 @@ func run(roomID string) error {
 
 	log.Printf("Successfully opened TAP interface: %s\n", tap.Name())
 
-	// Create a data channel
+	cmd := exec.Command("ip", "link", "set", "dev", tap.Name(), "mtu", "1300")
+	if err := cmd.Run(); err != nil {
+		log.Printf("Failed to set MTU 1300 for %s: %v", tap.Name(), err)
+	} else {
+		log.Printf("Set MTU 1300 for %s", tap.Name())
+	}
+
 	dataChannel, err := peerConnection.CreateDataChannel("vpntap", nil)
 	if err != nil {
 		return err
 	}
 
-	// Handle connection state changes
 	reconnectChan := make(chan struct{})
 	var closeOnce sync.Once
 	var connectionFailed bool
@@ -121,13 +129,31 @@ func run(roomID string) error {
 			})
 		}
 	})
-
-	// Handle ICE connection state changes
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 		log.Printf("ICE connection state changed to: %s\n", state.String())
+		if state == webrtc.ICEConnectionStateDisconnected || state == webrtc.ICEConnectionStateFailed {
+			log.Println("ICE state is disconnected or failed, attempting ICE restart...")
+			offer, err := peerConnection.CreateOffer(&webrtc.OfferOptions{ICERestart: true})
+			if err != nil {
+				log.Printf("Failed to create ICE restart offer: %v", err)
+				return
+			}
+			if err := peerConnection.SetLocalDescription(offer); err != nil {
+				log.Printf("Failed to set local description for ICE restart: %v", err)
+				return
+			}
+			restartMsg := signaling.Message{
+				Type:   "offer",
+				Target: "answerer",
+				SDP:    offer.SDP,
+			}
+			wsWriteMu.Lock()
+			if err := c.WriteJSON(restartMsg); err != nil {
+				log.Printf("Failed to send ICE restart offer: %v", err)
+			}
+			wsWriteMu.Unlock()
+		}
 	})
-
-	// Handle ICE candidates
 	peerConnection.OnICECandidate(func(ice *webrtc.ICECandidate) {
 		if ice != nil {
 			iceJSON := ice.ToJSON()
@@ -136,21 +162,18 @@ func run(roomID string) error {
 				Target:    "answerer",
 				Candidate: &iceJSON,
 			}
+			wsWriteMu.Lock()
 			if err := c.WriteJSON(candidateMsg); err != nil {
 				log.Printf("Error sending ICE candidate: %v", err)
 			}
+			wsWriteMu.Unlock()
 		}
 	})
-
-	// Handle data channel state changes
 	dataChannel.OnOpen(func() {
 		log.Println("Data channel opened")
-
-		// Start keepalive mechanism
 		go func() {
 			ticker := time.NewTicker(10 * time.Second)
 			defer ticker.Stop()
-
 			for {
 				select {
 				case <-ticker.C:
@@ -166,8 +189,6 @@ func run(roomID string) error {
 				}
 			}
 		}()
-
-		// Start reading from TAP interface
 		go func() {
 			buffer := make([]byte, 1500)
 			for {
@@ -185,8 +206,6 @@ func run(roomID string) error {
 			}
 		}()
 	})
-
-	// Handle incoming data
 	dataChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
 		if string(msg.Data) == "ping" {
 			log.Println("Received keepalive ping")
@@ -213,32 +232,33 @@ func run(roomID string) error {
 		}
 	}
 
-	// Create and send offer
+	// Add a short delay to allow answerer to reset before sending offer
+	time.Sleep(500 * time.Millisecond)
+
 	offer, err := peerConnection.CreateOffer(nil)
 	if err != nil {
 		return err
 	}
-
 	if err = peerConnection.SetLocalDescription(offer); err != nil {
 		return err
 	}
-
 	offerMsg := signaling.Message{
 		Type:   "offer",
 		Target: "answerer",
 		SDP:    offer.SDP,
 	}
+	wsWriteMu.Lock()
 	if err := c.WriteJSON(offerMsg); err != nil {
+		wsWriteMu.Unlock()
 		return err
 	}
+	wsWriteMu.Unlock()
 
-	// Handle incoming messages
 	for {
 		var msg signaling.Message
 		if err := c.ReadJSON(&msg); err != nil {
 			return err
 		}
-
 		switch msg.Type {
 		case "answer":
 			answer := webrtc.SessionDescription{
@@ -254,6 +274,9 @@ func run(roomID string) error {
 					log.Printf("Error adding ICE candidate: %v", err)
 				}
 			}
+		}
+		if connectionFailed {
+			return fmt.Errorf("connection failed, triggering reconnect")
 		}
 	}
 }
