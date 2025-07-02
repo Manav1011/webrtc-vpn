@@ -26,7 +26,7 @@ func main() {
 		log.Fatal("Room ID is required")
 	}
 
-	u := url.URL{Scheme: "wss", Host: "webrtc-vpn.mnv-dev.site", Path: "/ws"}
+	u := url.URL{Scheme: "wss", Host: "webrtc-vpn-go.mnv-dev.site", Path: "/ws"}
 	log.Printf("Connecting to %s", u.String())
 
 	dialer := websocket.Dialer{
@@ -54,16 +54,48 @@ func main() {
 	wsWriteMu.Unlock()
 
 	for {
-		err := runWithSignaling(c, &wsWriteMu)
-		if err != nil {
-			log.Printf("Error in run: %v. Reconnecting PeerConnection in 3 seconds...", err)
-			time.Sleep(3 * time.Second)
-			continue
+		// Wait for ready message from server before attempting connection
+		var msg signaling.Message
+		if err := c.ReadJSON(&msg); err != nil {
+			log.Printf("Error reading from websocket: %v", err)
+			return
+		}
+		if msg.Type == "ready" {
+			log.Println("Received ready message, starting WebRTC connection...")
+			err := runWithSignaling(c, &wsWriteMu)
+			if err != nil {
+				log.Printf("PeerConnection reset, waiting for answerer to reconnect...")
+				continue
+			}
+		} else {
+			log.Printf("Waiting for ready message, got: %s", msg.Type)
 		}
 	}
 }
 
 func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
+	var (
+		hasConnected    bool // Track if we ever established a connection
+		needsDisconnect bool // Track if we need to send disconnect on exit
+	)
+
+	// Helper function to send disconnect message
+	sendDisconnect := func() {
+		if !needsDisconnect {
+			return // Don't send duplicate disconnect messages
+		}
+		msg := signaling.Message{
+			Type: "disconnect",
+		}
+		wsWriteMu.Lock()
+		if err := c.WriteJSON(msg); err != nil {
+			log.Printf("Error sending disconnect message: %v", err)
+		}
+		wsWriteMu.Unlock()
+		log.Println("Sent disconnect message to signaling server")
+		needsDisconnect = false
+	}
+
 	config := webrtc.Configuration{
 		ICEServers: []webrtc.ICEServer{
 			{URLs: []string{"stun:stun.l.google.com:19302"}},
@@ -78,7 +110,13 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	if err != nil {
 		return err
 	}
-	defer peerConnection.Close()
+	defer func() {
+		peerConnection.Close()
+		// Only send disconnect if we had established a connection
+		if hasConnected {
+			sendDisconnect()
+		}
+	}()
 
 	tunConfig := water.Config{
 		DeviceType: water.TAP,
@@ -116,42 +154,49 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	reconnectChan := make(chan struct{})
 	var closeOnce sync.Once
 	var connectionFailed bool
+
+	// Helper to trigger a connection reset and return from runWithSignaling
+	triggerFatal := func(reason string) {
+		log.Printf("PeerConnection reset needed: %s", reason)
+		closeOnce.Do(func() {
+			if hasConnected {
+				needsDisconnect = true // Mark that we need to send disconnect on exit
+			}
+			close(reconnectChan)
+			connectionFailed = true
+		})
+	}
+
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
 		log.Printf("Connection state changed to: %s\n", s.String())
 		switch s {
 		case webrtc.PeerConnectionStateConnected:
 			log.Println("WebRTC state: connected (ICE completed, DTLS connected)")
-		case webrtc.PeerConnectionStateDisconnected, webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
-			log.Printf("WebRTC state: %s (ICE disconnected/failed/closed)\n", s.String())
-			closeOnce.Do(func() {
-				close(reconnectChan)
-				connectionFailed = true
-			})
+			hasConnected = true
+			needsDisconnect = true // We'll need to send disconnect if this connection ends
+		case webrtc.PeerConnectionStateDisconnected:
+			log.Printf("WebRTC state: disconnected (waiting for recovery)")
+			// Start a timer - if still disconnected after delay, trigger reset
+			go func() {
+				time.Sleep(10 * time.Second)
+				if peerConnection.ConnectionState() == webrtc.PeerConnectionStateDisconnected {
+					log.Println("Connection still disconnected after delay, triggering reset")
+					triggerFatal("Connection recovery timeout")
+				}
+			}()
+		case webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
+			log.Printf("WebRTC state: %s (ICE failed/closed)\n", s.String())
+			triggerFatal("Connection state: " + s.String())
 		}
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 		log.Printf("ICE connection state changed to: %s\n", state.String())
-		if state == webrtc.ICEConnectionStateDisconnected || state == webrtc.ICEConnectionStateFailed {
-			log.Println("ICE state is disconnected or failed, attempting ICE restart...")
-			offer, err := peerConnection.CreateOffer(&webrtc.OfferOptions{ICERestart: true})
-			if err != nil {
-				log.Printf("Failed to create ICE restart offer: %v", err)
-				return
-			}
-			if err := peerConnection.SetLocalDescription(offer); err != nil {
-				log.Printf("Failed to set local description for ICE restart: %v", err)
-				return
-			}
-			restartMsg := signaling.Message{
-				Type:   "offer",
-				Target: "answerer",
-				SDP:    offer.SDP,
-			}
-			wsWriteMu.Lock()
-			if err := c.WriteJSON(restartMsg); err != nil {
-				log.Printf("Failed to send ICE restart offer: %v", err)
-			}
-			wsWriteMu.Unlock()
+		if state == webrtc.ICEConnectionStateFailed {
+			log.Println("ICE connection failed, triggering reset")
+			triggerFatal("ICE connection failed")
+		} else if state == webrtc.ICEConnectionStateDisconnected {
+			log.Println("ICE connection disconnected, waiting for recovery")
+			// Let OnConnectionStateChange handle the timeout
 		}
 	})
 	peerConnection.OnICECandidate(func(ice *webrtc.ICECandidate) {
@@ -169,20 +214,29 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			wsWriteMu.Unlock()
 		}
 	})
+	var lastPongTime time.Time
 	dataChannel.OnOpen(func() {
 		log.Println("Data channel opened")
+		lastPongTime = time.Now() // Initialize on connection
 		go func() {
-			ticker := time.NewTicker(10 * time.Second)
+			ticker := time.NewTicker(2 * time.Second) // More frequent keepalive
 			defer ticker.Stop()
 			for {
 				select {
 				case <-ticker.C:
 					if dataChannel.ReadyState() == webrtc.DataChannelStateOpen {
+						log.Printf("DataChannel state: %s, Time since last pong: %v", dataChannel.ReadyState(), time.Since(lastPongTime))
 						if err := dataChannel.Send([]byte("ping")); err != nil {
 							log.Printf("Error sending keepalive: %v", err)
+							triggerFatal("Keepalive failed")
 							return
 						}
-						log.Println("Sent keepalive ping")
+						// If we haven't received a pong in 10 seconds, trigger reconnect
+						if time.Since(lastPongTime) > 10*time.Second {
+							log.Printf("No pong received in %v, triggering reconnect", time.Since(lastPongTime))
+							triggerFatal("No pong received")
+							return
+						}
 					}
 				case <-reconnectChan:
 					return
@@ -208,7 +262,15 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	})
 	dataChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
 		if string(msg.Data) == "ping" {
-			log.Println("Received keepalive ping")
+			log.Println("Received keepalive ping, sending pong")
+			if err := dataChannel.Send([]byte("pong")); err != nil {
+				log.Printf("Error sending pong: %v", err)
+			}
+			return
+		}
+		if string(msg.Data) == "pong" {
+			log.Println("Received keepalive pong")
+			lastPongTime = time.Now()
 			return
 		}
 		if _, err := tap.Write(msg.Data); err != nil {
@@ -237,9 +299,11 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 
 	offer, err := peerConnection.CreateOffer(nil)
 	if err != nil {
+		triggerFatal("CreateOffer initial failed")
 		return err
 	}
 	if err = peerConnection.SetLocalDescription(offer); err != nil {
+		triggerFatal("SetLocalDescription initial failed")
 		return err
 	}
 	offerMsg := signaling.Message{
@@ -250,11 +314,15 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	wsWriteMu.Lock()
 	if err := c.WriteJSON(offerMsg); err != nil {
 		wsWriteMu.Unlock()
+		triggerFatal("WriteJSON initial offer failed")
 		return err
 	}
 	wsWriteMu.Unlock()
 
 	for {
+		if connectionFailed {
+			return fmt.Errorf("connection failed, triggering reconnect")
+		}
 		var msg signaling.Message
 		if err := c.ReadJSON(&msg); err != nil {
 			return err
@@ -266,6 +334,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 				SDP:  msg.SDP,
 			}
 			if err := peerConnection.SetRemoteDescription(answer); err != nil {
+				triggerFatal("SetRemoteDescription answer failed")
 				return err
 			}
 		case "candidate":
@@ -274,9 +343,6 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 					log.Printf("Error adding ICE candidate: %v", err)
 				}
 			}
-		}
-		if connectionFailed {
-			return fmt.Errorf("connection failed, triggering reconnect")
 		}
 	}
 }

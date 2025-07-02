@@ -109,6 +109,18 @@ async def websocket_endpoint(websocket: WebSocket):
                 logger.info(f"Client {client_id} registered as {role} in room {room_id}")
                 # Notify both peers if both are present and deliver pending
                 await notify_peers_ready(room)
+            elif data['type'] == 'disconnect':
+                # Explicit disconnect message from client
+                if client_role and room_id:
+                    room = get_room(room_id)
+                    room[client_role] = None
+                    logger.info(f"Client {client_id} ({client_role}) sent disconnect for room {room_id}")
+                    # Clear all room state immediately
+                    if room_id in rooms:
+                        logger.info(f"Explicit disconnect: Cleaning up room {room_id}")
+                        del rooms[room_id]
+                await websocket.close()
+                return
             elif data['type'] == 'offer':
                 room = get_room(room_id)
                 if room['answerer']:
@@ -154,6 +166,6 @@ async def websocket_endpoint(websocket: WebSocket):
 
 if __name__ == "__main__":
     host = os.environ.get('SIGNALING_HOST', '0.0.0.0')
-    port = int(os.environ.get('SIGNALING_PORT', '8080'))
+    port = int(os.environ.get('SIGNALING_PORT', '9090'))
     logger.info(f"Starting FastAPI signaling server on ws://{host}:{port}")
     uvicorn.run("server:app", host=host, port=port, reload=True)

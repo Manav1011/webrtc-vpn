@@ -27,7 +27,7 @@ func main() {
 		log.Fatal("Room ID is required")
 	}
 
-	u := url.URL{Scheme: "wss", Host: "webrtc-vpn.mnv-dev.site", Path: "/ws"}
+	u := url.URL{Scheme: "wss", Host: "webrtc-vpn-go.mnv-dev.site", Path: "/ws"}
 	log.Printf("Connecting to %s", u.String())
 
 	dialer := websocket.Dialer{
@@ -65,6 +65,25 @@ func main() {
 }
 
 func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
+	var needsDisconnect bool // Track if we need to send disconnect on exit
+
+	// Helper function to send disconnect message
+	sendDisconnect := func() {
+		if !needsDisconnect {
+			return // Don't send duplicate disconnect messages
+		}
+		msg := signaling.Message{
+			Type: "disconnect",
+		}
+		wsWriteMu.Lock()
+		_ = c.WriteJSON(msg)
+		wsWriteMu.Unlock()
+		log.Println("Sent disconnect message to signaling server")
+		needsDisconnect = false
+	}
+
+	defer sendDisconnect() // Will be called on both normal exit and panic
+
 	config := webrtc.Configuration{
 		ICEServers: []webrtc.ICEServer{
 			{URLs: []string{"stun:stun.l.google.com:19302"}},
@@ -109,56 +128,46 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		log.Printf("Set MTU 1300 for %s", tap.Name())
 	}
 
-	reconnectChan := make(chan struct{})
-	var closeOnce sync.Once
+	var currentDataChannel *webrtc.DataChannel
 	var connectionFailed bool
-	var connectionMu sync.Mutex
 
-	resetConnection := func() {
-		connectionMu.Lock()
-		defer connectionMu.Unlock()
-		reconnectChan = make(chan struct{})
-		closeOnce = sync.Once{}
-		connectionFailed = false
-	}
+	// Create a channel to signal when to stop keepalive
+	stopKeepalive := make(chan struct{})
+	defer close(stopKeepalive)
 
+	// Variables for connection monitoring
 	var (
-		currentDataChannel *webrtc.DataChannel
-		keepaliveRunning   bool
-		keepaliveMu        sync.Mutex
+		lastPingMu   sync.Mutex
+		lastPingTime = time.Now()
 	)
 
-	startKeepalive := func(d *webrtc.DataChannel, reconnectCh <-chan struct{}) {
-		keepaliveMu.Lock()
-		if keepaliveRunning {
-			keepaliveMu.Unlock()
-			return
-		}
-		keepaliveRunning = true
-		keepaliveMu.Unlock()
-		go func() {
-			ticker := time.NewTicker(10 * time.Second)
-			defer ticker.Stop()
-			defer func() {
-				keepaliveMu.Lock()
-				keepaliveRunning = false
-				keepaliveMu.Unlock()
-			}()
-			for {
-				select {
-				case <-ticker.C:
-					if d.ReadyState() == webrtc.DataChannelStateOpen {
-						if err := d.Send([]byte("ping")); err != nil {
-							log.Printf("Error sending keepalive: %v", err)
-							return
-						}
-						log.Println("Sent keepalive ping")
+	// Function to monitor data channel state
+	startKeepalive := func(d *webrtc.DataChannel) {
+		log.Println("Starting connection monitor")
+		ticker := time.NewTicker(2 * time.Second)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ticker.C:
+				if d.ReadyState() == webrtc.DataChannelStateOpen {
+					lastPingMu.Lock()
+					timeSinceLastPing := time.Since(lastPingTime)
+					lastPingMu.Unlock()
+
+					log.Printf("DataChannel state: %s, Time since last ping: %v", d.ReadyState(), timeSinceLastPing)
+					// If we haven't received a ping in 15 seconds, close the connection
+					if timeSinceLastPing > 15*time.Second {
+						log.Printf("No ping received in %v, closing connection", timeSinceLastPing)
+						peerConnection.Close()
+						return
 					}
-				case <-reconnectCh:
-					return
 				}
+			case <-stopKeepalive:
+				log.Println("Stopping connection monitor")
+				return
 			}
-		}()
+		}
 	}
 
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
@@ -166,22 +175,13 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		switch s {
 		case webrtc.PeerConnectionStateConnected:
 			log.Println("WebRTC state: connected (ICE completed, DTLS connected)")
-			resetConnection()
-			// If data channel is open and keepalive not running, start it
+			needsDisconnect = true // We'll need to send disconnect if this connection ends
 			if currentDataChannel != nil && currentDataChannel.ReadyState() == webrtc.DataChannelStateOpen {
-				connectionMu.Lock()
-				currentReconnectChan := reconnectChan
-				connectionMu.Unlock()
-				startKeepalive(currentDataChannel, currentReconnectChan)
+				go startKeepalive(currentDataChannel)
 			}
 		case webrtc.PeerConnectionStateDisconnected, webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
 			log.Printf("WebRTC state: %s (ICE disconnected/failed/closed)\n", s.String())
-			connectionMu.Lock()
-			closeOnce.Do(func() {
-				close(reconnectChan)
-				connectionFailed = true
-			})
-			connectionMu.Unlock()
+			close(stopKeepalive) // Stop keepalive routine
 		}
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
@@ -208,16 +208,8 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		currentDataChannel = d
 		d.OnOpen(func() {
 			log.Printf("Data channel '%s' opened\n", d.Label())
-			connectionMu.Lock()
-			currentReconnectChan := reconnectChan
-			connectionMu.Unlock()
-			startKeepalive(d, currentReconnectChan)
-			// Close local channel when data channel closes
-			d.OnClose(func() {
-				keepaliveMu.Lock()
-				keepaliveRunning = false
-				keepaliveMu.Unlock()
-			})
+			go startKeepalive(d)
+
 			go func() {
 				buffer := make([]byte, 1500)
 				for {
@@ -237,7 +229,13 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		})
 		d.OnMessage(func(msg webrtc.DataChannelMessage) {
 			if string(msg.Data) == "ping" {
-				log.Println("Received keepalive ping")
+				lastPingMu.Lock()
+				lastPingTime = time.Now() // Update last ping time
+				lastPingMu.Unlock()
+				log.Println("Received keepalive ping, sending pong")
+				if err := d.Send([]byte("pong")); err != nil {
+					log.Printf("Error sending pong: %v", err)
+				}
 				return
 			}
 			if _, err := tap.Write(msg.Data); err != nil {
