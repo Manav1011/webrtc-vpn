@@ -18,14 +18,7 @@ import (
 	"github.com/songgao/water"
 )
 
-func main() {
-	roomID := flag.String("room", "", "Room ID for signaling")
-	flag.Parse()
-
-	if *roomID == "" {
-		log.Fatal("Room ID is required")
-	}
-
+func connectWebSocket(role, room string) (*websocket.Conn, *sync.Mutex, error) {
 	u := url.URL{Scheme: "wss", Host: "webrtc-vpn-go.mnv-dev.site", Path: "/ws"}
 	log.Printf("Connecting to %s", u.String())
 
@@ -35,41 +28,44 @@ func main() {
 
 	c, _, err := dialer.Dial(u.String(), nil)
 	if err != nil {
-		log.Fatalf("Failed to connect to signaling server: %v", err)
+		return nil, nil, err
 	}
-	defer c.Close()
 
-	var wsWriteMu sync.Mutex
-
-	registerMsg := signaling.Message{
-		Type: "register",
-		Role: "offerer",
-		Room: *roomID,
-	}
+	wsWriteMu := &sync.Mutex{}
+	reg := signaling.Message{Type: "register", Role: role, Room: room}
 	wsWriteMu.Lock()
-	if err := c.WriteJSON(registerMsg); err != nil {
-		wsWriteMu.Unlock()
-		log.Fatalf("Failed to register: %v", err)
-	}
+	err = c.WriteJSON(reg)
 	wsWriteMu.Unlock()
+	if err != nil {
+		c.Close()
+		return nil, nil, err
+	}
+	return c, wsWriteMu, nil
+}
+
+func main() {
+	roomID := flag.String("room", "", "Room ID for signaling")
+	flag.Parse()
+	if *roomID == "" {
+		log.Fatal("Room ID is required")
+	}
 
 	for {
-		// Wait for ready message from server before attempting connection
-		var msg signaling.Message
-		if err := c.ReadJSON(&msg); err != nil {
-			log.Printf("Error reading from websocket: %v", err)
-			return
+		conn, wsMu, err := connectWebSocket("offerer", *roomID)
+		if err != nil {
+			log.Printf("Failed to connect/register to signaling server: %v. Retrying in 5s...", err)
+			time.Sleep(5 * time.Second)
+			continue
 		}
-		if msg.Type == "ready" {
-			log.Println("Received ready message, starting WebRTC connection...")
-			err := runWithSignaling(c, &wsWriteMu)
-			if err != nil {
-				log.Printf("PeerConnection reset, waiting for answerer to reconnect...")
-				continue
-			}
-		} else {
-			log.Printf("Waiting for ready message, got: %s", msg.Type)
+
+		if err := runWithSignaling(conn, wsMu); err != nil {
+			log.Printf("runWithSignaling ended: %v", err)
 		}
+
+		// ensure socket closed before next attempt
+		conn.Close()
+		log.Println("Re-establishing signaling connection in 3s...")
+		time.Sleep(3 * time.Second)
 	}
 }
 
@@ -82,17 +78,14 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	// Helper function to send disconnect message
 	sendDisconnect := func() {
 		if !needsDisconnect {
-			return // Don't send duplicate disconnect messages
+			return // Don't run twice
 		}
-		msg := signaling.Message{
-			Type: "disconnect",
-		}
-		wsWriteMu.Lock()
-		if err := c.WriteJSON(msg); err != nil {
-			log.Printf("Error sending disconnect message: %v", err)
-		}
-		wsWriteMu.Unlock()
-		log.Println("Sent disconnect message to signaling server")
+		// We used to notify the signaling server with a special "disconnect" message, but that
+		// causes the server to close our WebSocket which breaks the automatic reconnection loop.
+		// Instead we simply mark the flag as processed and keep the signaling socket open so we
+		// can wait for the next "ready" message and restart the WebRTC handshake without having
+		// to recreate the WebSocket.
+		log.Println("Local PeerConnection closed; keeping signaling WebSocket open for reconnection")
 		needsDisconnect = false
 	}
 
@@ -231,12 +224,6 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 							triggerFatal("Keepalive failed")
 							return
 						}
-						// If we haven't received a pong in 10 seconds, trigger reconnect
-						if time.Since(lastPongTime) > 10*time.Second {
-							log.Printf("No pong received in %v, triggering reconnect", time.Since(lastPongTime))
-							triggerFatal("No pong received")
-							return
-						}
 					}
 				case <-reconnectChan:
 					return
@@ -277,22 +264,6 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			log.Printf("Error writing to TAP: %v", err)
 		}
 	})
-
-	// Wait for ready message
-	for {
-		if connectionFailed {
-			return fmt.Errorf("connection failed, triggering reconnect")
-		}
-		var msg signaling.Message
-		if err := c.ReadJSON(&msg); err != nil {
-			return err
-		}
-		log.Printf("Received message type: %s", msg.Type)
-		if msg.Type == "ready" {
-			log.Println("Both peers are online. Creating offer...")
-			break
-		}
-	}
 
 	// Add a short delay to allow answerer to reset before sending offer
 	time.Sleep(500 * time.Millisecond)
@@ -343,6 +314,10 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 					log.Printf("Error adding ICE candidate: %v", err)
 				}
 			}
+		case "peer_down":
+			log.Println("Signaling: remote peer went offline – resetting connection")
+			triggerFatal("peer_down from signaling server")
+			continue
 		}
 	}
 }

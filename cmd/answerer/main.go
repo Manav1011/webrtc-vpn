@@ -19,48 +19,49 @@ import (
 	"github.com/songgao/water"
 )
 
+func connectWebSocket(role, room string) (*websocket.Conn, *sync.Mutex, error) {
+	u := url.URL{Scheme: "wss", Host: "webrtc-vpn-go.mnv-dev.site", Path: "/ws"}
+	log.Printf("Connecting to %s", u.String())
+
+	dialer := websocket.Dialer{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
+	c, _, err := dialer.Dial(u.String(), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	wsMu := &sync.Mutex{}
+	reg := signaling.Message{Type: "register", Role: role, Room: room}
+	wsMu.Lock()
+	err = c.WriteJSON(reg)
+	wsMu.Unlock()
+	if err != nil {
+		c.Close()
+		return nil, nil, err
+	}
+	return c, wsMu, nil
+}
+
 func main() {
 	roomID := flag.String("room", "", "Room ID for signaling")
 	flag.Parse()
-
 	if *roomID == "" {
 		log.Fatal("Room ID is required")
 	}
 
-	u := url.URL{Scheme: "wss", Host: "webrtc-vpn-go.mnv-dev.site", Path: "/ws"}
-	log.Printf("Connecting to %s", u.String())
-
-	dialer := websocket.Dialer{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	c, _, err := dialer.Dial(u.String(), nil)
-	if err != nil {
-		log.Fatalf("Failed to connect to signaling server: %v", err)
-	}
-	defer c.Close()
-
-	var wsWriteMu sync.Mutex
-
-	registerMsg := signaling.Message{
-		Type: "register",
-		Role: "answerer",
-		Room: *roomID,
-	}
-	wsWriteMu.Lock()
-	if err := c.WriteJSON(registerMsg); err != nil {
-		wsWriteMu.Unlock()
-		log.Fatalf("Failed to register: %v", err)
-	}
-	wsWriteMu.Unlock()
-
 	for {
-		err := runWithSignaling(c, &wsWriteMu)
+		conn, wsMu, err := connectWebSocket("answerer", *roomID)
 		if err != nil {
-			log.Printf("Error in run: %v. Reconnecting PeerConnection in 3 seconds...", err)
-			time.Sleep(3 * time.Second)
+			log.Printf("Failed to connect/register to signaling server: %v. Retrying in 5s...", err)
+			time.Sleep(5 * time.Second)
 			continue
 		}
+
+		if err := runWithSignaling(conn, wsMu); err != nil {
+			log.Printf("Error in run: %v", err)
+		}
+		conn.Close()
+		log.Println("Re-establishing signaling connection in 3s...")
+		time.Sleep(3 * time.Second)
 	}
 }
 
@@ -70,15 +71,12 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	// Helper function to send disconnect message
 	sendDisconnect := func() {
 		if !needsDisconnect {
-			return // Don't send duplicate disconnect messages
+			return // Don't run twice
 		}
-		msg := signaling.Message{
-			Type: "disconnect",
-		}
-		wsWriteMu.Lock()
-		_ = c.WriteJSON(msg)
-		wsWriteMu.Unlock()
-		log.Println("Sent disconnect message to signaling server")
+		// Keep the signaling WebSocket alive so the offerer can send a fresh offer when it
+		// reconnects.  Simply clear the flag and log the event instead of notifying the
+		// server with a special "disconnect" packet (which would close the socket).
+		log.Println("Local PeerConnection closed; keeping signaling WebSocket open for reconnection")
 		needsDisconnect = false
 	}
 
@@ -131,9 +129,20 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	var currentDataChannel *webrtc.DataChannel
 	var connectionFailed bool
 
-	// Create a channel to signal when to stop keepalive
-	stopKeepalive := make(chan struct{})
-	defer close(stopKeepalive)
+	// Channel to signal keep-alive goroutine to stop. We recreate it each time the
+	// PeerConnection transitions back to Connected so the monitor can restart
+	// cleanly after a temporary ICE outage.
+	var (
+		stopKeepalive     chan struct{}
+		stopKeepaliveOnce sync.Once
+	)
+
+	createKeepalive := func() {
+		stopKeepalive = make(chan struct{})
+		stopKeepaliveOnce = sync.Once{}
+	}
+	createKeepalive()
+	defer stopKeepaliveOnce.Do(func() { close(stopKeepalive) })
 
 	// Variables for connection monitoring
 	var (
@@ -142,7 +151,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	)
 
 	// Function to monitor data channel state
-	startKeepalive := func(d *webrtc.DataChannel) {
+	startKeepalive := func(d *webrtc.DataChannel, stopCh <-chan struct{}) {
 		log.Println("Starting connection monitor")
 		ticker := time.NewTicker(2 * time.Second)
 		defer ticker.Stop()
@@ -156,14 +165,10 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 					lastPingMu.Unlock()
 
 					log.Printf("DataChannel state: %s, Time since last ping: %v", d.ReadyState(), timeSinceLastPing)
-					// If we haven't received a ping in 15 seconds, close the connection
-					if timeSinceLastPing > 15*time.Second {
-						log.Printf("No ping received in %v, closing connection", timeSinceLastPing)
-						peerConnection.Close()
-						return
-					}
+					// We no longer close the connection on missing ping; rely on ICE state
+					// and signaling presence to detect failures. The log remains useful.
 				}
-			case <-stopKeepalive:
+			case <-stopCh:
 				log.Println("Stopping connection monitor")
 				return
 			}
@@ -176,12 +181,18 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		case webrtc.PeerConnectionStateConnected:
 			log.Println("WebRTC state: connected (ICE completed, DTLS connected)")
 			needsDisconnect = true // We'll need to send disconnect if this connection ends
+			// Reset ping timer so the new monitor has a full grace period.
+			lastPingMu.Lock()
+			lastPingTime = time.Now()
+			lastPingMu.Unlock()
+			// Recreate keep-alive control channel so a fresh monitor can run after a reconnect.
+			createKeepalive()
 			if currentDataChannel != nil && currentDataChannel.ReadyState() == webrtc.DataChannelStateOpen {
-				go startKeepalive(currentDataChannel)
+				go startKeepalive(currentDataChannel, stopKeepalive)
 			}
 		case webrtc.PeerConnectionStateDisconnected, webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
 			log.Printf("WebRTC state: %s (ICE disconnected/failed/closed)\n", s.String())
-			close(stopKeepalive) // Stop keepalive routine
+			stopKeepaliveOnce.Do(func() { close(stopKeepalive) }) // Stop keepalive routine (once)
 		}
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
@@ -208,7 +219,11 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		currentDataChannel = d
 		d.OnOpen(func() {
 			log.Printf("Data channel '%s' opened\n", d.Label())
-			go startKeepalive(d)
+			lastPingMu.Lock()
+			lastPingTime = time.Now()
+			lastPingMu.Unlock()
+
+			go startKeepalive(d, stopKeepalive)
 
 			go func() {
 				buffer := make([]byte, 1500)
@@ -286,6 +301,12 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 					log.Printf("Error adding ICE candidate: %v", err)
 				}
 			}
+		case "peer_down":
+			log.Println("Signaling: remote peer went offline – resetting connection")
+			peerConnection.Close()
+			connectionFailed = true
+			stopKeepaliveOnce.Do(func() { close(stopKeepalive) })
+			continue
 		}
 	}
 

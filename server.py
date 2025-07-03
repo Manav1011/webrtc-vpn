@@ -59,6 +59,16 @@ async def notify_peers_ready(room):
                     logger.warning(f"Failed to deliver pending candidate to {role}: {e}")
             room['pending_candidates'][role] = []
 
+async def notify_peer_down(room, role_left):
+    """Send a peer_down event to the remaining peer when its counterpart goes offline."""
+    other = 'answerer' if role_left == 'offerer' else 'offerer'
+    if room.get(other):
+        try:
+            await room[other].send_json({"type": "peer_down"})
+            logger.info(f"Sent peer_down to {other} in room.")
+        except Exception as e:
+            logger.warning(f"Failed to send peer_down to {other}: {e}")
+
 def get_room(room_id):
     if room_id not in rooms:
         rooms[room_id] = {
@@ -113,6 +123,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 # Explicit disconnect message from client
                 if client_role and room_id:
                     room = get_room(room_id)
+                    # Notify the remaining peer before cleaning up
+                    await notify_peer_down(room, client_role)
                     room[client_role] = None
                     logger.info(f"Client {client_id} ({client_role}) sent disconnect for room {room_id}")
                     # Clear all room state immediately
@@ -154,6 +166,8 @@ async def websocket_endpoint(websocket: WebSocket):
     finally:
         if client_role and room_id:
             room = get_room(room_id)
+            # Notify the other peer that this one is gone
+            await notify_peer_down(room, client_role)
             room[client_role] = None
             logger.info(f"Client {client_id} ({client_role}) disconnected from room {room_id}")
             if client_role == 'offerer':
