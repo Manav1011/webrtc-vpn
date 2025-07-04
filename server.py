@@ -44,7 +44,6 @@ async def notify_peers_ready(room):
         if room['pending_offer']:
             try:
                 await room['answerer'].send_text(room['pending_offer'])
-                logger.info(f"Delivered pending offer to answerer in room.")
                 room['pending_offer'] = None
             except Exception as e:
                 logger.warning(f"Failed to deliver pending offer: {e}")
@@ -54,7 +53,6 @@ async def notify_peers_ready(room):
                 try:
                     if room[role]:
                         await room[role].send_json(candidate)
-                        logger.info(f"Delivered pending candidate to {role} in room.")
                 except Exception as e:
                     logger.warning(f"Failed to deliver pending candidate to {role}: {e}")
             room['pending_candidates'][role] = []
@@ -65,7 +63,6 @@ async def notify_peer_down(room, role_left):
     if room.get(other):
         try:
             await room[other].send_json({"type": "peer_down"})
-            logger.info(f"Sent peer_down to {other} in room.")
         except Exception as e:
             logger.warning(f"Failed to send peer_down to {other}: {e}")
 
@@ -102,7 +99,9 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             message = await websocket.receive_text()
             data = json.loads(message)
-            logger.info(f"Received message from {client_id} (room={room_id}, role={client_role}): {data['type']}")
+            # Only log important state changes, not routine message forwarding
+            if data['type'] in ['register', 'disconnect', 'peer_down']:
+                logger.info(f"Client {client_id} (room={room_id}, role={client_role}): {data['type']}")
 
             if data['type'] == 'register':
                 role = data['role']
@@ -136,24 +135,19 @@ async def websocket_endpoint(websocket: WebSocket):
             elif data['type'] == 'offer':
                 room = get_room(room_id)
                 if room['answerer']:
-                    # Check if this might be an ICE restart offer
+                    # Check if this might be an ICE restart offer - only log ICE restarts
                     if room['offerer'] and room['answerer']:
-                        logger.info(f"Forwarding offer (likely ICE restart) to answerer in room {room_id}")
-                    else:
-                        logger.info(f"Forwarding initial offer to answerer in room {room_id}")
+                        logger.info(f"ICE restart offer in room {room_id}")
                     await room['answerer'].send_text(message)
                 else:
                     # Only store as pending if there isn't already a pending offer
                     # This prevents ICE restart offers from overwriting initial offers
                     if room['pending_offer'] is None:
-                        logger.info(f"Storing initial offer until answerer connects in room {room_id}")
                         room['pending_offer'] = message
-                    else:
-                        logger.info(f"Ignoring additional offer (likely ICE restart) while answerer not connected in room {room_id}")
+                    # Silently ignore additional offers while answerer not connected
             elif data['type'] == 'answer':
                 room = get_room(room_id)
                 if room['offerer']:
-                    logger.info(f"Forwarding answer to offerer in room {room_id}")
                     await room['offerer'].send_text(message)
                 else:
                     logger.warning(f"Offerer not connected in room {room_id}, cannot forward answer")
@@ -161,10 +155,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 room = get_room(room_id)
                 target_role = 'answerer' if client_role == 'offerer' else 'offerer'
                 if room[target_role]:
-                    logger.info(f"Forwarding ICE candidate to {target_role} in room {room_id}")
                     await room[target_role].send_json(data)
                 else:
-                    logger.info(f"Storing ICE candidate for {target_role} in room {room_id}")
                     room['pending_candidates'][target_role].append(data)
             elif data['type'] == 'peer_down':
                 # Handle peer_down message - forward it and clear stale state
@@ -173,8 +165,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 if room[target_role]:
                     logger.info(f"Forwarding peer_down from {client_role} to {target_role} in room {room_id}")
                     await room[target_role].send_json(data)
-                else:
-                    logger.info(f"peer_down received but {target_role} not connected in room {room_id}")
                 
                 # Clear pending state for the peer that went down
                 if client_role == 'offerer':

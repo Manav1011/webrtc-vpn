@@ -281,39 +281,39 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 
 	var lastPongTime time.Time
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
-		log.Printf("Connection state changed to: %s\n", s.String())
+		log.Printf("Connection state: %s", s.String())
 		switch s {
 		case webrtc.PeerConnectionStateConnected:
-			log.Println("WebRTC state: connected (ICE completed, DTLS connected)")
+			log.Println("WebRTC connected")
 			hasConnected = true
 			needsDisconnect = true // We'll need to send disconnect if this connection ends
 			resetNotifiers()
 			// Reset pong timer when connection is established/restored
 			lastPongTime = time.Now()
 		case webrtc.PeerConnectionStateDisconnected:
-			log.Println("WebRTC state: disconnected – initiating ICE restart")
+			log.Println("WebRTC disconnected – initiating ICE restart")
 			go restartICE()
 			// Start a short timer; if still disconnected, fall back to full reset
 			go func() {
 				time.Sleep(4 * time.Second)
 				if peerConnection.ConnectionState() == webrtc.PeerConnectionStateDisconnected && !connectionFailed {
-					log.Println("Connection still disconnected after quick restart, triggering reset")
+					log.Println("Connection still disconnected after restart, triggering reset")
 					triggerFatal("Connection recovery timeout")
 				}
 			}()
 		case webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
-			log.Printf("WebRTC state: %s (ICE failed/closed)\n", s.String())
+			log.Printf("WebRTC state: %s", s.String())
 			triggerFatal("Connection state: " + s.String())
 		}
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
-		log.Printf("ICE connection state changed to: %s\n", state.String())
+		log.Printf("ICE state: %s", state.String())
 		switch state {
 		case webrtc.ICEConnectionStateDisconnected:
 			// Let the connection state handler manage ICE restart to avoid race conditions
 			log.Println("ICE disconnected – connection state handler will manage restart")
 		case webrtc.ICEConnectionStateFailed:
-			log.Println("ICE connection failed, triggering reset")
+			log.Println("ICE failed, triggering reset")
 			triggerFatal("ICE connection failed")
 		}
 	})
@@ -336,7 +336,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		log.Println("Data channel opened")
 		lastPongTime = time.Now() // Initialize on connection
 		go func() {
-			ticker := time.NewTicker(2 * time.Second) // More frequent keepalive
+			ticker := time.NewTicker(5 * time.Second) // Less frequent keepalive for performance
 			defer ticker.Stop()
 			for {
 				select {
@@ -346,15 +346,19 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 						if peerConnection.ConnectionState() != webrtc.PeerConnectionStateConnected {
 							continue
 						}
-						// Allow a longer grace period (15s) before declaring link dead
-						if time.Since(lastPongTime) > 15*time.Second {
-							log.Println("No pong received for 15 seconds, triggering reset")
+						// Allow a longer grace period (30s) for better stability
+						if time.Since(lastPongTime) > 30*time.Second {
+							log.Println("Connection timeout detected, triggering reset")
 							triggerFatal("Pong timeout")
 							return
 						}
-						log.Printf("DataChannel state: %s, Time since last pong: %v", dataChannel.ReadyState(), time.Since(lastPongTime))
+						// Only log if approaching timeout (last 10 seconds)
+						timeSinceLastPong := time.Since(lastPongTime)
+						if timeSinceLastPong > 20*time.Second {
+							log.Printf("Connection health check: %v since last response", timeSinceLastPong)
+						}
 						if err := dataChannel.Send([]byte("ping")); err != nil {
-							log.Printf("Error sending keepalive: %v", err)
+							log.Printf("Keepalive failed: %v", err)
 							triggerFatal("Keepalive failed")
 							return
 						}
@@ -383,14 +387,14 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	})
 	dataChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
 		if string(msg.Data) == "ping" {
-			log.Println("Received keepalive ping, sending pong")
+			// Silent ping response for performance
 			if err := dataChannel.Send([]byte("pong")); err != nil {
 				log.Printf("Error sending pong: %v", err)
 			}
 			return
 		}
 		if string(msg.Data) == "pong" {
-			log.Println("Received keepalive pong")
+			// Silent pong reception, just update timer
 			lastPongTime = time.Now()
 			return
 		}

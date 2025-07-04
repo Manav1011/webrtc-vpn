@@ -31,27 +31,6 @@ func connectWebSocket(role, room string) (*websocket.Conn, *sync.Mutex, error) {
 
 	wsMu := &sync.Mutex{}
 
-	// --- WebSocket application-level ping/pong keep-alive ---
-	c.SetReadDeadline(time.Now().Add(30 * time.Second))
-	c.SetPongHandler(func(string) error {
-		log.Println("WebSocket pong received")
-		c.SetReadDeadline(time.Now().Add(30 * time.Second))
-		return nil
-	})
-	go func() {
-		ticker := time.NewTicker(15 * time.Second)
-		defer ticker.Stop()
-		for range ticker.C {
-			wsMu.Lock()
-			log.Println("Sending WebSocket ping")
-			if err := c.WriteMessage(websocket.PingMessage, nil); err != nil {
-				wsMu.Unlock()
-				return // the read loop will catch the error
-			}
-			wsMu.Unlock()
-		}
-	}()
-
 	reg := signaling.Message{Type: "register", Role: role, Room: room}
 	wsMu.Lock()
 	err = c.WriteJSON(reg)
@@ -187,7 +166,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	// Function to monitor data channel state
 	startKeepalive := func(d *webrtc.DataChannel, stopCh <-chan struct{}) {
 		log.Println("Starting connection monitor")
-		ticker := time.NewTicker(2 * time.Second)
+		ticker := time.NewTicker(10 * time.Second) // Less frequent monitoring for performance
 		defer ticker.Stop()
 
 		for {
@@ -198,9 +177,10 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 					timeSinceLastPing := time.Since(lastPingTime)
 					lastPingMu.Unlock()
 
-					log.Printf("DataChannel state: %s, Time since last ping: %v", d.ReadyState(), timeSinceLastPing)
-					// We no longer close the connection on missing ping; rely on ICE state
-					// and signaling presence to detect failures. The log remains useful.
+					// Only log if connection seems problematic (>20s without ping)
+					if timeSinceLastPing > 20*time.Second {
+						log.Printf("Connection health: %v since last ping", timeSinceLastPing)
+					}
 				}
 			case <-stopCh:
 				log.Println("Stopping connection monitor")
@@ -210,10 +190,10 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	}
 
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
-		log.Printf("Connection state changed to: %s\n", s.String())
+		log.Printf("Connection state: %s", s.String())
 		switch s {
 		case webrtc.PeerConnectionStateConnected:
-			log.Println("WebRTC state: connected (ICE completed, DTLS connected)")
+			log.Println("WebRTC connected")
 			needsDisconnect = true // We'll need to send disconnect if this connection ends
 			// Reset ping timer so the new monitor has a full grace period.
 			lastPingMu.Lock()
@@ -225,19 +205,19 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 				go startKeepalive(currentDataChannel, stopKeepalive)
 			}
 		case webrtc.PeerConnectionStateDisconnected:
-			log.Println("WebRTC state: disconnected (waiting for recovery)")
+			log.Println("WebRTC disconnected (waiting for recovery)")
 			// Answerer waits for offerer to handle ICE restart; no action needed here
 		case webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
-			log.Printf("WebRTC state: %s (ICE failed/closed)\n", s.String())
+			log.Printf("WebRTC state: %s", s.String())
 			triggerFatal("Connection state: " + s.String())
 			stopKeepaliveOnce.Do(func() { close(stopKeepalive) }) // Stop keepalive routine (once)
 		}
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
-		log.Printf("ICE connection state changed to: %s\n", state.String())
+		log.Printf("ICE state: %s", state.String())
 		switch state {
 		case webrtc.ICEConnectionStateFailed:
-			log.Println("ICE connection failed, triggering reset")
+			log.Println("ICE failed, triggering reset")
 			triggerFatal("ICE connection failed")
 		}
 		// Only log and let the offerer handle ICE restart. Do not send offers from the answerer!
@@ -290,7 +270,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 				lastPingMu.Lock()
 				lastPingTime = time.Now() // Update last ping time
 				lastPingMu.Unlock()
-				log.Println("Received keepalive ping, sending pong")
+				// Silent ping response for performance
 				if err := d.Send([]byte("pong")); err != nil {
 					log.Printf("Error sending pong: %v", err)
 				}
