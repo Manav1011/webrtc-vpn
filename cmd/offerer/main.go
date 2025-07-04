@@ -76,8 +76,11 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		connectionFailed bool
 	)
 
-	// glare flag
-	var makingOffer bool
+	// glare flag and restart management
+	var (
+		makingOffer       bool
+		restartInProgress bool // Prevent multiple simultaneous restart attempts
+	)
 
 	// Helper function to send disconnect message
 	sendDisconnect := func() {
@@ -192,6 +195,23 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 
 	// restartICE performs an ICE restart and signals a fresh offer to the answerer.
 	restartICE = func() {
+		// Prevent multiple simultaneous restart attempts
+		if restartInProgress || connectionFailed {
+			log.Println("ICE restart already in progress or connection failed, skipping")
+			return
+		}
+
+		// Check if PeerConnection is in a valid state for restart
+		signalingState := peerConnection.SignalingState()
+		if signalingState != webrtc.SignalingStateStable {
+			log.Printf("Cannot restart ICE in signaling state %s, triggering full reset", signalingState)
+			triggerFatal("Invalid signaling state for ICE restart")
+			return
+		}
+
+		restartInProgress = true
+		defer func() { restartInProgress = false }()
+
 		retry := 0
 
 		retryOffer := func() bool {
@@ -200,10 +220,12 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			offer, err := peerConnection.CreateOffer(&webrtc.OfferOptions{ICERestart: true})
 			if err != nil {
 				log.Printf("CreateOffer (restart) failed: %v", err)
+				makingOffer = false
 				return false
 			}
 			if err = peerConnection.SetLocalDescription(offer); err != nil {
 				log.Printf("SetLocalDescription (restart) failed: %v", err)
+				makingOffer = false
 				return false
 			}
 			wsWriteMu.Lock()
@@ -211,30 +233,44 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			wsWriteMu.Unlock()
 			if err != nil {
 				log.Printf("Failed to send restart offer: %v", err)
+				makingOffer = false
 				return false
 			}
 			log.Println("ICE restart offer sent")
 			makingOffer = false
 			return true
 		}
+
 		if !retryOffer() {
 			triggerFatal("Restart offer send failed")
 			return
 		}
-		for retry < 2 {
+
+		for retry < 2 && !connectionFailed {
 			time.Sleep(8 * time.Second)
+
+			// Check if connection was reset during sleep
+			if connectionFailed {
+				log.Println("Connection was reset during ICE restart, stopping retries")
+				return
+			}
+
 			if peerConnection.ConnectionState() == webrtc.PeerConnectionStateConnected {
 				log.Println("ICE restart succeeded")
 				return
 			}
 			retry++
 			log.Printf("ICE still not connected after retry %d, resending offer", retry)
-			retryOffer()
+			if !retryOffer() {
+				break
+			}
 		}
+
 		// give up
-		log.Println("ICE restart retries exhausted")
-		triggerFatal("ICE restart retries exhausted")
-		return
+		if !connectionFailed {
+			log.Println("ICE restart retries exhausted")
+			triggerFatal("ICE restart retries exhausted")
+		}
 	}
 
 	// Now that triggerFatal is defined, register the OnClose handler
@@ -257,7 +293,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			// Start a short timer; if still disconnected, fall back to full reset
 			go func() {
 				time.Sleep(4 * time.Second)
-				if peerConnection.ConnectionState() == webrtc.PeerConnectionStateDisconnected {
+				if peerConnection.ConnectionState() == webrtc.PeerConnectionStateDisconnected && !connectionFailed {
 					log.Println("Connection still disconnected after quick restart, triggering reset")
 					triggerFatal("Connection recovery timeout")
 				}
@@ -271,8 +307,8 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		log.Printf("ICE connection state changed to: %s\n", state.String())
 		switch state {
 		case webrtc.ICEConnectionStateDisconnected:
-			log.Println("ICE disconnected – trying ICE restart")
-			go restartICE()
+			// Let the connection state handler manage ICE restart to avoid race conditions
+			log.Println("ICE disconnected – connection state handler will manage restart")
 		case webrtc.ICEConnectionStateFailed:
 			log.Println("ICE connection failed, triggering reset")
 			triggerFatal("ICE connection failed")
