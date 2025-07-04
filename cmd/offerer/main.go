@@ -279,6 +279,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		triggerFatal("Data channel closed")
 	})
 
+	var lastPongTime time.Time
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
 		log.Printf("Connection state changed to: %s\n", s.String())
 		switch s {
@@ -287,6 +288,8 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			hasConnected = true
 			needsDisconnect = true // We'll need to send disconnect if this connection ends
 			resetNotifiers()
+			// Reset pong timer when connection is established/restored
+			lastPongTime = time.Now()
 		case webrtc.PeerConnectionStateDisconnected:
 			log.Println("WebRTC state: disconnected – initiating ICE restart")
 			go restartICE()
@@ -329,7 +332,6 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			wsWriteMu.Unlock()
 		}
 	})
-	var lastPongTime time.Time
 	dataChannel.OnOpen(func() {
 		log.Println("Data channel opened")
 		lastPongTime = time.Now() // Initialize on connection
