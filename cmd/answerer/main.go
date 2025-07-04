@@ -30,6 +30,28 @@ func connectWebSocket(role, room string) (*websocket.Conn, *sync.Mutex, error) {
 	}
 
 	wsMu := &sync.Mutex{}
+
+	// --- WebSocket application-level ping/pong keep-alive ---
+	c.SetReadDeadline(time.Now().Add(30 * time.Second))
+	c.SetPongHandler(func(string) error {
+		log.Println("WebSocket pong received")
+		c.SetReadDeadline(time.Now().Add(30 * time.Second))
+		return nil
+	})
+	go func() {
+		ticker := time.NewTicker(15 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			wsMu.Lock()
+			log.Println("Sending WebSocket ping")
+			if err := c.WriteMessage(websocket.PingMessage, nil); err != nil {
+				wsMu.Unlock()
+				return // the read loop will catch the error
+			}
+			wsMu.Unlock()
+		}
+	}()
+
 	reg := signaling.Message{Type: "register", Role: role, Room: room}
 	wsMu.Lock()
 	err = c.WriteJSON(reg)
@@ -92,7 +114,10 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		},
 	}
 
-	peerConnection, err := webrtc.NewPeerConnection(config)
+	se := webrtc.SettingEngine{}
+	se.SetICETimeouts(10*time.Second, 15*time.Second, 2*time.Second) // disconnected, failed, keepalive ticks
+	api := webrtc.NewAPI(webrtc.WithSettingEngine(se))
+	peerConnection, err := api.NewPeerConnection(config)
 	if err != nil {
 		return err
 	}
@@ -136,6 +161,15 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		stopKeepalive     chan struct{}
 		stopKeepaliveOnce sync.Once
 	)
+
+	// Helper to trigger a connection reset and return from runWithSignaling
+	triggerFatal := func(reason string) {
+		log.Printf("PeerConnection reset needed: %s", reason)
+		if !connectionFailed {
+			connectionFailed = true
+			stopKeepaliveOnce.Do(func() { close(stopKeepalive) })
+		}
+	}
 
 	createKeepalive := func() {
 		stopKeepalive = make(chan struct{})
@@ -190,13 +224,22 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			if currentDataChannel != nil && currentDataChannel.ReadyState() == webrtc.DataChannelStateOpen {
 				go startKeepalive(currentDataChannel, stopKeepalive)
 			}
-		case webrtc.PeerConnectionStateDisconnected, webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
-			log.Printf("WebRTC state: %s (ICE disconnected/failed/closed)\n", s.String())
+		case webrtc.PeerConnectionStateDisconnected:
+			log.Println("WebRTC state: disconnected (waiting for recovery)")
+			// Answerer waits for offerer to handle ICE restart; no action needed here
+		case webrtc.PeerConnectionStateFailed, webrtc.PeerConnectionStateClosed:
+			log.Printf("WebRTC state: %s (ICE failed/closed)\n", s.String())
+			triggerFatal("Connection state: " + s.String())
 			stopKeepaliveOnce.Do(func() { close(stopKeepalive) }) // Stop keepalive routine (once)
 		}
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 		log.Printf("ICE connection state changed to: %s\n", state.String())
+		switch state {
+		case webrtc.ICEConnectionStateFailed:
+			log.Println("ICE connection failed, triggering reset")
+			triggerFatal("ICE connection failed")
+		}
 		// Only log and let the offerer handle ICE restart. Do not send offers from the answerer!
 	})
 	peerConnection.OnICECandidate(func(ice *webrtc.ICECandidate) {
@@ -259,6 +302,19 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		})
 	})
 
+	// Start a goroutine to monitor connectionFailed and close WebSocket if needed
+	go func() {
+		ticker := time.NewTicker(1 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			if connectionFailed {
+				log.Println("Connection failed detected, closing WebSocket to break read loop")
+				c.Close()
+				return
+			}
+		}
+	}()
+
 	// No change needed here: answerer is always ready to accept a new offer after restart
 	for {
 		if connectionFailed {
@@ -270,19 +326,38 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		}
 		switch msg.Type {
 		case "offer":
+			// Check if PeerConnection is in a state that can accept offers
+			signalingState := peerConnection.SignalingState()
+			log.Printf("Received offer while in signaling state: %s", signalingState)
+
 			offer := webrtc.SessionDescription{
 				Type: webrtc.SDPTypeOffer,
 				SDP:  msg.SDP,
 			}
+
+			// If we're in a failed state, we might need to reset before accepting the offer
+			if peerConnection.ConnectionState() == webrtc.PeerConnectionStateFailed ||
+				peerConnection.ConnectionState() == webrtc.PeerConnectionStateClosed {
+				log.Println("PeerConnection in failed/closed state, triggering reset to handle new offer")
+				triggerFatal("Received offer while in failed/closed state")
+				continue
+			}
+
 			if err := peerConnection.SetRemoteDescription(offer); err != nil {
-				return err
+				log.Printf("SetRemoteDescription failed: %v", err)
+				triggerFatal("SetRemoteDescription failed")
+				continue
 			}
 			answer, err := peerConnection.CreateAnswer(nil)
 			if err != nil {
-				return err
+				log.Printf("CreateAnswer failed: %v", err)
+				triggerFatal("CreateAnswer failed")
+				continue
 			}
 			if err = peerConnection.SetLocalDescription(answer); err != nil {
-				return err
+				log.Printf("SetLocalDescription failed: %v", err)
+				triggerFatal("SetLocalDescription failed")
+				continue
 			}
 			answerMsg := signaling.Message{
 				Type:   "answer",
@@ -292,9 +367,12 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			wsWriteMu.Lock()
 			if err := c.WriteJSON(answerMsg); err != nil {
 				wsWriteMu.Unlock()
-				return err
+				log.Printf("Failed to send answer: %v", err)
+				triggerFatal("Failed to send answer")
+				continue
 			}
 			wsWriteMu.Unlock()
+			log.Println("Successfully processed offer and sent answer")
 		case "candidate":
 			if msg.Candidate != nil {
 				if err := peerConnection.AddICECandidate(*msg.Candidate); err != nil {
@@ -303,9 +381,7 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			}
 		case "peer_down":
 			log.Println("Signaling: remote peer went offline – resetting connection")
-			peerConnection.Close()
-			connectionFailed = true
-			stopKeepaliveOnce.Do(func() { close(stopKeepalive) })
+			triggerFatal("peer_down from signaling server")
 			continue
 		}
 	}

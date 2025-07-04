@@ -71,9 +71,13 @@ func main() {
 
 func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	var (
-		hasConnected    bool // Track if we ever established a connection
-		needsDisconnect bool // Track if we need to send disconnect on exit
+		hasConnected     bool // Track if we ever established a connection
+		needsDisconnect  bool // Track if we need to send disconnect on exit
+		connectionFailed bool
 	)
+
+	// glare flag
+	var makingOffer bool
 
 	// Helper function to send disconnect message
 	sendDisconnect := func() {
@@ -99,7 +103,10 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		},
 	}
 
-	peerConnection, err := webrtc.NewPeerConnection(config)
+	se := webrtc.SettingEngine{}
+	se.SetICETimeouts(10*time.Second, 15*time.Second, 2*time.Second) // disconnected, failed, keepalive ticks
+	api := webrtc.NewAPI(webrtc.WithSettingEngine(se))
+	peerConnection, err := api.NewPeerConnection(config)
 	if err != nil {
 		return err
 	}
@@ -144,9 +151,25 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		return err
 	}
 
+	// defer registering OnClose until triggerFatal is defined
+
 	reconnectChan := make(chan struct{})
 	var closeOnce sync.Once
-	var connectionFailed bool
+
+	// notify answerer once per failure
+	var notifyOnce sync.Once
+	sendPeerDown := func() {
+		notifyOnce.Do(func() {
+			pd := signaling.Message{Type: "peer_down", Target: "answerer"}
+			wsWriteMu.Lock()
+			_ = c.WriteJSON(pd)
+			wsWriteMu.Unlock()
+			log.Println("Sent peer_down to answerer")
+		})
+	}
+
+	// Placeholder: restartICE defined later, after triggerFatal
+	var restartICE func()
 
 	// Helper to trigger a connection reset and return from runWithSignaling
 	triggerFatal := func(reason string) {
@@ -157,8 +180,68 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			}
 			close(reconnectChan)
 			connectionFailed = true
+			// keep signalling WebSocket alive; just notify peer
+			sendPeerDown()
 		})
 	}
+
+	// Reset the notifyOnce when a new WebSocket/PC is up
+	resetNotifiers := func() {
+		notifyOnce = sync.Once{}
+	}
+
+	// restartICE performs an ICE restart and signals a fresh offer to the answerer.
+	restartICE = func() {
+		retry := 0
+
+		retryOffer := func() bool {
+			log.Println("Attempting ICE restart (CreateOffer with ICERestart)")
+			makingOffer = true
+			offer, err := peerConnection.CreateOffer(&webrtc.OfferOptions{ICERestart: true})
+			if err != nil {
+				log.Printf("CreateOffer (restart) failed: %v", err)
+				return false
+			}
+			if err = peerConnection.SetLocalDescription(offer); err != nil {
+				log.Printf("SetLocalDescription (restart) failed: %v", err)
+				return false
+			}
+			wsWriteMu.Lock()
+			err = c.WriteJSON(signaling.Message{Type: "offer", Target: "answerer", SDP: offer.SDP})
+			wsWriteMu.Unlock()
+			if err != nil {
+				log.Printf("Failed to send restart offer: %v", err)
+				return false
+			}
+			log.Println("ICE restart offer sent")
+			makingOffer = false
+			return true
+		}
+		if !retryOffer() {
+			triggerFatal("Restart offer send failed")
+			return
+		}
+		for retry < 2 {
+			time.Sleep(8 * time.Second)
+			if peerConnection.ConnectionState() == webrtc.PeerConnectionStateConnected {
+				log.Println("ICE restart succeeded")
+				return
+			}
+			retry++
+			log.Printf("ICE still not connected after retry %d, resending offer", retry)
+			retryOffer()
+		}
+		// give up
+		log.Println("ICE restart retries exhausted")
+		triggerFatal("ICE restart retries exhausted")
+		return
+	}
+
+	// Now that triggerFatal is defined, register the OnClose handler
+	dataChannel.OnClose(func() {
+		log.Println("Data channel closed, triggering reset")
+		triggerFatal("Data channel closed")
+	})
 
 	peerConnection.OnConnectionStateChange(func(s webrtc.PeerConnectionState) {
 		log.Printf("Connection state changed to: %s\n", s.String())
@@ -167,13 +250,15 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 			log.Println("WebRTC state: connected (ICE completed, DTLS connected)")
 			hasConnected = true
 			needsDisconnect = true // We'll need to send disconnect if this connection ends
+			resetNotifiers()
 		case webrtc.PeerConnectionStateDisconnected:
-			log.Printf("WebRTC state: disconnected (waiting for recovery)")
-			// Start a timer - if still disconnected after delay, trigger reset
+			log.Println("WebRTC state: disconnected – initiating ICE restart")
+			go restartICE()
+			// Start a short timer; if still disconnected, fall back to full reset
 			go func() {
-				time.Sleep(10 * time.Second)
+				time.Sleep(4 * time.Second)
 				if peerConnection.ConnectionState() == webrtc.PeerConnectionStateDisconnected {
-					log.Println("Connection still disconnected after delay, triggering reset")
+					log.Println("Connection still disconnected after quick restart, triggering reset")
 					triggerFatal("Connection recovery timeout")
 				}
 			}()
@@ -184,12 +269,13 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	})
 	peerConnection.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 		log.Printf("ICE connection state changed to: %s\n", state.String())
-		if state == webrtc.ICEConnectionStateFailed {
+		switch state {
+		case webrtc.ICEConnectionStateDisconnected:
+			log.Println("ICE disconnected – trying ICE restart")
+			go restartICE()
+		case webrtc.ICEConnectionStateFailed:
 			log.Println("ICE connection failed, triggering reset")
 			triggerFatal("ICE connection failed")
-		} else if state == webrtc.ICEConnectionStateDisconnected {
-			log.Println("ICE connection disconnected, waiting for recovery")
-			// Let OnConnectionStateChange handle the timeout
 		}
 	})
 	peerConnection.OnICECandidate(func(ice *webrtc.ICECandidate) {
@@ -218,6 +304,16 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 				select {
 				case <-ticker.C:
 					if dataChannel.ReadyState() == webrtc.DataChannelStateOpen {
+						// Skip timeout check if the PC is not yet in Connected state (during ICE restart)
+						if peerConnection.ConnectionState() != webrtc.PeerConnectionStateConnected {
+							continue
+						}
+						// Allow a longer grace period (15s) before declaring link dead
+						if time.Since(lastPongTime) > 15*time.Second {
+							log.Println("No pong received for 15 seconds, triggering reset")
+							triggerFatal("Pong timeout")
+							return
+						}
 						log.Printf("DataChannel state: %s, Time since last pong: %v", dataChannel.ReadyState(), time.Since(lastPongTime))
 						if err := dataChannel.Send([]byte("ping")); err != nil {
 							log.Printf("Error sending keepalive: %v", err)
@@ -290,6 +386,19 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 	}
 	wsWriteMu.Unlock()
 
+	// Start a goroutine to monitor connectionFailed and close WebSocket if needed
+	go func() {
+		ticker := time.NewTicker(1 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			if connectionFailed {
+				log.Println("Connection failed detected, closing WebSocket to break read loop")
+				c.Close()
+				return
+			}
+		}
+	}()
+
 	for {
 		if connectionFailed {
 			return fmt.Errorf("connection failed, triggering reconnect")
@@ -317,6 +426,31 @@ func runWithSignaling(c *websocket.Conn, wsWriteMu *sync.Mutex) error {
 		case "peer_down":
 			log.Println("Signaling: remote peer went offline – resetting connection")
 			triggerFatal("peer_down from signaling server")
+			continue
+		case "offer":
+			if makingOffer || peerConnection.SignalingState() != webrtc.SignalingStateStable {
+				log.Println("Impolite offerer received glare offer – ignoring")
+				continue
+			}
+			// If stable (should not happen in normal flow), treat as reset from server
+			log.Println("Unexpected remote offer while stable; rolling over to restart")
+			// Accept it politely to recover
+			if err := peerConnection.SetRemoteDescription(webrtc.SessionDescription{Type: webrtc.SDPTypeOffer, SDP: msg.SDP}); err != nil {
+				log.Printf("SetRemote unexpected offer failed: %v", err)
+				continue
+			}
+			answer, err := peerConnection.CreateAnswer(nil)
+			if err != nil {
+				log.Printf("CreateAnswer to unexpected offer failed: %v", err)
+				continue
+			}
+			if err = peerConnection.SetLocalDescription(answer); err != nil {
+				log.Printf("SetLocalDescription unexpected answer failed: %v", err)
+				continue
+			}
+			wsWriteMu.Lock()
+			_ = c.WriteJSON(signaling.Message{Type: "answer", Target: "answerer", SDP: answer.SDP})
+			wsWriteMu.Unlock()
 			continue
 		}
 	}
